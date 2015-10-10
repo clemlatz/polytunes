@@ -41,7 +41,7 @@ Template.login.events({
     const roomId = Rooms.findOne()._id;
 
     Meteor.call('addUser', roomId, { surname, color});
-    Session.set('authorization', "true");
+    Session.setPersistent('authorization', "true");
     return false;
   }
 });
