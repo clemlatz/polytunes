@@ -1,3 +1,7 @@
+Template.body.helpers({
+    isLogged: ()=> !Session.get('authorization') ? false : true
+})
+
 Template.board.helpers({
   rows: function () {
     if (!Session.get('room')) {
@@ -14,6 +18,20 @@ Template.board.helpers({
       Session.set('room', room);
     }
     return Session.get('room').partition;
+  },
+});
+
+Template.login.events({
+  'submit #login-form': event => {
+    event.preventDefault();
+
+    const surname = event.target.surname.value;
+    const color = event.target.color.value;
+    const roomId = Rooms.findOne()._id;
+
+    Meteor.call('addUser', roomId, { surname, color});
+    Session.set('authorization', "true");
+    return false;
   }
 });
 

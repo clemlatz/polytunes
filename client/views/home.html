@@ -3,10 +3,14 @@
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+  <h1>Welcome to Polytunes!</h1>
 
-  {{> board}}
-  {{> controls}}
+	{{#if isLogged}}
+		{{> board}}
+		{{> controls}}
+	{{else}}
+		{{> login}}
+	{{/if}}
 </body>
 
 <template name="board">
@@ -25,4 +29,25 @@
 
 <template name="controls">
   <button id="play" class="e">play</button>
+</template>
+
+<template name="login">
+	<div class="login-container">
+		<form id="login-form">
+			<input type="text" placeholder="surname" name="surname">
+			<select name="color">
+				<option value="RED">Red</option>
+				<option value="BLUE">Blue</option>
+				<option value="LIGHT_GREY">Light green</option>
+				<option value="TEAL">Teal</option>
+				<option value="YELLOW">Yellow</option>
+				<option value="ORANGE">Orange</option>
+				<option value="INDIGO">Indigo</option>
+				<option value="GREEN">Green</option>
+				<option value="PINK">Pink</option>
+				<option value="PURPLE">Purple</option>
+			</select>
+			<input type="button" value="Valider">
+		</form>
+	</div>
 </template>
