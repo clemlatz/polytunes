@@ -38,7 +38,7 @@ Meteor.methods({
 	deleteUser: (roomId, userId)=> {
 		Rooms.remove(roomId, {
 			$pull: {
-				userId
+				players: { userId }
 			}
 		});
 	},
