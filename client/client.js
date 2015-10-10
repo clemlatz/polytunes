@@ -76,18 +76,18 @@ Meteor.startup( function() {
       return new Wad({source : 'sine'});
     },
     playNote: function(frequency) {
-      var wad = this.getWad();
+      var wad = this.getWad()
       wad.play({
-        volume  : 0.8,
-        pitch   : frequency,  // A4 is 440 hertz.
-        env     : {hold : 9001},
-        panning : [1, -1, 10],
-        filter  : {frequency : 900},
-        delay   : {delayTime : .8}
+        pitch : frequency,  // A4 is 440 hertz.
+        env : {
+          decay: duration / 1000 * .1,
+          hold: duration / 1000 * 1.1,
+          release: duration / 1000 * .75
+        },
+        reverb: {
+          wet: 1
+        }
       });
-      setTimeout( function() {
-        wad.stop();
-      }, 5000);
     }
   }
 
