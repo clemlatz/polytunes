@@ -3,7 +3,7 @@ if (Rooms.find().count() === 0) {
         isPublic: true,
         board: {
             width: 16,
-            heigth: 16
+            height: 16
         },
         players: [],
         partition: [],
