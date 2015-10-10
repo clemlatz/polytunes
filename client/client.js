@@ -66,6 +66,34 @@ Template.controls.events({
   }
 });
 
+Meteor.startup( function() {
+
+  var Instrument = function() {
+  }
+
+  Instrument.prototype = {
+    getWad: function() {
+      return new Wad({source : 'sine'});
+    },
+    playNote: function(frequency) {
+      var wad = this.getWad();
+      wad.play({
+        volume  : 0.8,
+        pitch   : frequency,  // A4 is 440 hertz.
+        env     : {hold : 9001},
+        panning : [1, -1, 10],
+        filter  : {frequency : 900},
+        delay   : {delayTime : .8}
+      });
+      setTimeout( function() {
+        wad.stop();
+      }, 5000);
+    }
+  }
+
+  instrument = new Instrument();
+});
+
 function cell(x, y, userId) {
   return {
     x: x || 0,
@@ -110,7 +138,7 @@ function play () {
     if (cell.i) {
       cell.p = true;
       // visualEffect(cell);
-      playNote(cell.note);
+      instrument.playNote(cell.note);
     }
   }
 
@@ -122,29 +150,3 @@ function noteDuration() {
 }
 
 var cursor = 0;
-
-var oscillator = new Array();
-var wave = "sine";
-
-// Audio Context
-var context = new (window.AudioContext || window.webkitAudioContext);
-
-// Play note from oscillator
-function playNote(frequency) {
-  var i = Math.random(0,10000);
-
-  // Create OscillatorNode
-  oscillator[i] = context.createOscillator(); // Create sound source
-  oscillator[i].type = wave; // Wave form
-  oscillator[i].frequency.value = frequency; // Frequency in hertz
-  // Connect the Nodes
-  oscillator[i].connect(context.destination); // Connect gain to output
-  oscillator[i].start(0); // Play oscillator[i] instantly
-  setTimeout(function() {
-    oscillator[i].stop(0);
-  }, noteDuration());
-
-  // var now = context.currentTime;
-  // oscillator[i].start(now + 0);
-  // oscillator[i].stop(now + noteDuration());
-}
