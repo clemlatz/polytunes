@@ -26,10 +26,9 @@ Template.board.helpers({
       boardData[cell.x][cell.y] = cell;
     });
 
-    console.log('row helper', boardData);
 
     return boardData;
-  },
+  }
 });
 
 Template.login.events({
@@ -42,6 +41,8 @@ Template.login.events({
 
     Meteor.call('addUser', roomId, { surname, color});
     Session.setPersistent('authorization', "true");
+    Session.setPersistent('surname', surname);
+    Session.setPersistent('color', color);
     return false;
   }
 });
@@ -53,10 +54,9 @@ Template.board.events({
 
     let room = Rooms.findOne();
     boardData[x][y].i = !boardData[x][y].i;
+    boardData[x][y].color = Session.get('color');
 
     Meteor.call('addNote', room._id, boardData[x][y]);
-
-    console.log('r', room);
   },
 });
 
