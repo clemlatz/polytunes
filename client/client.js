@@ -1,19 +1,48 @@
+Template.body.helpers({
+    isLogged: ()=> !Session.get('authorization') ? false : true
+})
+
+let boardData;
+
 Template.board.helpers({
   rows: function () {
-    if (!Session.get('room')) {
-      let room = Rooms.findOne();
-      console.log(room);
+    let room = Rooms.findOne();
 
+    if (!room)
+      return false;
+
+    if (!boardData) {
+      boardData = [];
       for (let i = 0; i < room.board.width; i++) {
         let row = [];
         for (let j = 0; j < room.board.height ; j++) {
           row.push(cell(i, j));
         }
-        room.partition.push(row);
+        boardData.push(row)
       }
-      Session.set('room', room);
     }
-    return Session.get('room').partition;
+
+    room.partition.forEach(function (cell) {
+      boardData[cell.x][cell.y] = cell;
+    });
+
+    console.log(boardData);
+
+    return boardData;
+  },
+});
+
+Template.login.events({
+  'submit #login-form': event => {
+    event.preventDefault();
+
+    const surname = event.target.surname.value;
+    const color = event.target.color.value;
+    const roomId = Rooms.findOne()._id;
+
+    Meteor.call('addUser', roomId, { surname, color});
+    Session.setPersistent('authorization', "true");
+    return false;
   }
 });
 
@@ -22,10 +51,12 @@ Template.board.events({
     let x = $(event.target).data('x');
     let y = $(event.target).data('y');
 
-    let room = Session.get('room');
-    room.partition[x][y].i = !room.partition[x][y].i;
+    let room = Rooms.findOne();
+    boardData[x][y].i = !boardData[x][y].i;
 
-    Session.set('room', room);
+    Meteor.call('addNote', room._id, boardData[x][y]);
+
+    console.log('r', room);
   },
 });
 
@@ -33,6 +64,11 @@ Template.controls.events({
   'click #play': function (event, template) {
     togglePlay();
   }
+});
+
+Meteor.startup( function() {
+
+  instrument = new Instrument();
 });
 
 function cell(x, y, userId) {
@@ -64,7 +100,7 @@ let togglePlay = (function() {
 })();
 
 function play () {
-  let room = Session.get('room');
+  let room = Rooms.findOne();
 
   if (cursor > room.board.width) {
     cursor = 0;
@@ -79,7 +115,7 @@ function play () {
     if (cell.i) {
       cell.p = true;
       // visualEffect(cell);
-      playNote(cell.note);
+      instrument.playNote(cell.note);
     }
   }
 
@@ -87,33 +123,7 @@ function play () {
 }
 
 function noteDuration() {
-  return 60 / Session.get('room').tempo * 1000 / 4;
+  return 60 / Rooms.findOne().tempo * 1000 / 4;
 }
 
 var cursor = 0;
-
-var oscillator = new Array();
-var wave = "sine";
-
-// Audio Context
-var context = new (window.AudioContext || window.webkitAudioContext);
-
-// Play note from oscillator
-function playNote(frequency) {
-  var i = Math.random(0,10000);
-
-  // Create OscillatorNode
-  oscillator[i] = context.createOscillator(); // Create sound source
-  oscillator[i].type = wave; // Wave form
-  oscillator[i].frequency.value = frequency; // Frequency in hertz
-  // Connect the Nodes
-  oscillator[i].connect(context.destination); // Connect gain to output
-  oscillator[i].start(0); // Play oscillator[i] instantly
-  setTimeout(function() {
-    oscillator[i].stop(0);
-  }, noteDuration());
-
-  // var now = context.currentTime;
-  // oscillator[i].start(now + 0);
-  // oscillator[i].stop(now + noteDuration());
-}

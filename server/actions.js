@@ -1,14 +1,21 @@
 Meteor.methods({
-	addNote: (roomId, {x, y, timestamp})=> {
+	addNote: (roomId, cell)=> {
 		var userId = Meteor.userId();
+		cell.userId = userId;
 		Rooms.update(roomId, {
 			$push: {
-				partition: {
-					x,
-					y,
-					timestamp,
-					userId
-				}
+				partition: cell
+			}
+		});
+	},
+	updateNote: (roomId, cell)=> {
+		Rooms.upsert({
+			_id: roomId,
+			'partition.x': cell.x,
+			'partition.y': cell.y,
+		}, {
+			$set: {
+				'partition.$': cell
 			}
 		});
 	},

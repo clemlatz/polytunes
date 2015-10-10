@@ -25,3 +25,5 @@ check
 random
 mvrx:bluebird
 grove:call-async
+mizzao:timesync
+u2622:persistent-session
