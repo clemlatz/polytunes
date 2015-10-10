@@ -26,7 +26,7 @@ Template.board.helpers({
       boardData[cell.x][cell.y] = cell;
     });
 
-    console.log(boardData);
+    console.log('row helper', boardData);
 
     return boardData;
   },
@@ -67,6 +67,29 @@ Template.controls.events({
 });
 
 Meteor.startup( function() {
+  var Instrument = function() {
+  }
+
+  Instrument.prototype = {
+    getWad: function() {
+      return new Wad({source : 'sine'});
+    },
+    playNote: function(frequency) {
+      var wad = this.getWad()
+      var duration = noteDuration()
+      wad.play({
+        pitch : frequency,  // A4 is 440 hertz.
+        env : {
+          decay: duration / 1000 * .1,
+          hold: duration / 1000 * 1.1,
+          release: duration / 1000 * .75
+        },
+        reverb: {
+          wet: 1
+        }
+      });
+    }
+  }
 
   instrument = new Instrument();
 });
@@ -87,9 +110,7 @@ let togglePlay = (function() {
   let handler = -1;
   return function() {
     if (handler === -1) {
-      console.debug('play');
       handler = setInterval(function () {
-        console.debug('tick');
         play();
       }, noteDuration());
     } else {
@@ -102,20 +123,18 @@ let togglePlay = (function() {
 function play () {
   let room = Rooms.findOne();
 
-  if (cursor > room.board.width) {
+  if (cursor >= room.board.width) {
     cursor = 0;
   }
 
-  // $('td').removeClass('p p1 p2');
-
-  for(let y = 0; y < room.board.height+1; y++) {
-    console.log('cursor', cursor);
-    console.log('y', y);
-    let cell = room.partition[cursor][y];
+  $('td').removeClass('p p1 p2');
+  for(let y = 0; y < room.board.height; y++) {
+    let cell = boardData[y][cursor];
     if (cell.i) {
-      cell.p = true;
+      $(`td[data-x="${y}"][data-y="${cursor}"]`).toggleClass('p');
+      // cell.p = true;
       // visualEffect(cell);
-      instrument.playNote(cell.note);
+      instrument.playNote(cell.frequency);
     }
   }
 
