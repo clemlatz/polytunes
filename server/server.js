@@ -1,15 +1,23 @@
-Meteor.startup(function () {
-// code to run on server at startup
-});
-
 if (Rooms.find().count() === 0) {
-  Rooms.insert({
-  	isPublic: true
-  });
+    Rooms.insert({
+        isPublic: true,
+        board: {
+            width: 16,
+            height: 16
+        },
+        players: [],
+        partition: [],
+        synthetizer: {
+            base: 260,
+            wave: "sine",
+            scale: SCALE_VALUES.PENTATONIC_MINOR
+        },
+        tempo: 120
+    });
 }
 
 Meteor.publish(null, function() {
-  return Rooms.find();
+    return Rooms.find();
 });
 
 Rooms.allow({

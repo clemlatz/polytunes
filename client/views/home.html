@@ -5,10 +5,24 @@
 <body>
   <h1>Welcome to Meteor!</h1>
 
-  {{> hello}}
+  {{> board}}
+  {{> controls}}
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="board">
+  <table id="board">
+    <tbody>
+      {{#each rows}}
+        <tr>
+          {{#each .}}
+            <td title="{{title}}" class="x{{x}} y{{y}} {{#if i}}i{{/if}}" data-x="{{x}}" data-y="{{y}}"></td>
+          {{/each}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<template name="controls">
+  <button id="play" class="e">play</button>
 </template>
