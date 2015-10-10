@@ -1,0 +1,23 @@
+{
+  "name": "polytunes",
+  "version": "0.0.0",
+  "homepage": "https://github.com/iwazaru/polytunes",
+  "authors": [
+    "Clement Bourgoin <cb@nokto.net>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Wad": "wad#~2.2.3"
+  }
+}
