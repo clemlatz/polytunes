@@ -13,19 +13,20 @@ Template.board.helpers({
 
     if (!boardData) {
       boardData = [];
-      for (let i = 0; i < room.board.width; i++) {
+      for (let y = 0; y < room.board.height ; y++) {
         let row = [];
-        for (let j = 0; j < room.board.height ; j++) {
-          row.push(cell(i, j));
+        for (let x = 0; x < room.board.width; x++) {
+          row.push(cell(x, y));
         }
         boardData.push(row)
       }
     }
 
     room.partition.forEach(function (cell) {
-      boardData[cell.x][cell.y] = cell;
+      boardData[cell.y][cell.x] = cell;
     });
 
+    setNotes();
 
     return boardData;
   }
@@ -53,10 +54,11 @@ Template.board.events({
     let y = $(event.target).data('y');
 
     let room = Rooms.findOne();
-    boardData[x][y].i = !boardData[x][y].i;
-    boardData[x][y].color = Session.get('color');
 
-    Meteor.call('addNote', room._id, boardData[x][y]);
+    boardData[y][x].color = Session.get('color');
+    boardData[y][x].i = !boardData[y][x].i;
+
+    Meteor.call('addNote', room._id, boardData[y][x]);
   },
 });
 
@@ -131,7 +133,7 @@ function play () {
   for(let y = 0; y < room.board.height; y++) {
     let cell = boardData[y][cursor];
     if (cell.i) {
-      $(`td[data-x="${y}"][data-y="${cursor}"]`).toggleClass('p');
+      $(`td[data-x="${cursor}"][data-y="${y}"]`).toggleClass('p');
       // cell.p = true;
       // visualEffect(cell);
       instrument.playNote(cell.frequency);
@@ -146,3 +148,39 @@ function noteDuration() {
 }
 
 var cursor = 0;
+
+// Calculate note from base and interval
+function calcNote(base,interval) {
+  return Math.round(base * Math.pow(2,interval/12)*100)/100;
+}
+
+// Get 'max' notes of 'scale' from 'base'
+function getScaleNotes(scale,base,max) {
+  interval = 0;
+  ni = 0;
+  notes = new Array();
+  ints = new Array();
+  for(n = 0; n < max; n++) {
+    note = calcNote(base,interval);
+    interval = interval + scale[ni];
+    ints[n] = scale[ni];
+    notes[n] = note;
+    ni++;
+    if (ni >= scale.length) ni = 0;
+  }
+  return notes;
+}
+
+// Each cell get its note
+function setNotes() {
+  var base = 260;
+  var board_height = Rooms.findOne().board.height;
+  var board_width = Rooms.findOne().board.width;
+  var notes = getScaleNotes(SCALE_VALUES.MAJOR, base, board_height);
+    for(x = 0; x < board_width; x++) {
+  for(y = 0; y < board_height; y++) {
+      boardData[x][y].frequency = notes[board_height-x-1];
+      boardData[x][y].title = notes[board_height-x-1];
+    }
+  }
+}
