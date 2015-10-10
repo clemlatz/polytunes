@@ -41,5 +41,8 @@ Meteor.methods({
 				userId
 			}
 		});
+	},
+	ping: ()=> {
+		return new Date();
 	}
 });
