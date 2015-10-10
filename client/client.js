@@ -2,22 +2,33 @@ Template.body.helpers({
     isLogged: ()=> !Session.get('authorization') ? false : true
 })
 
+let boardData;
+
 Template.board.helpers({
   rows: function () {
-    if (!Session.get('room')) {
-      let room = Rooms.findOne();
-      console.log(room);
+    let room = Rooms.findOne();
 
+    if (!room)
+      return false;
+
+    if (!boardData) {
+      boardData = [];
       for (let i = 0; i < room.board.width; i++) {
         let row = [];
         for (let j = 0; j < room.board.height ; j++) {
           row.push(cell(i, j));
         }
-        room.partition.push(row);
+        boardData.push(row)
       }
-      Session.set('room', room);
     }
-    return Session.get('room').partition;
+
+    room.partition.forEach(function (cell) {
+      boardData[cell.x][cell.y] = cell;
+    });
+
+    console.log(boardData);
+
+    return boardData;
   },
 });
 
@@ -40,10 +51,12 @@ Template.board.events({
     let x = $(event.target).data('x');
     let y = $(event.target).data('y');
 
-    let room = Session.get('room');
-    room.partition[x][y].i = !room.partition[x][y].i;
+    let room = Rooms.findOne();
+    boardData[x][y].i = !boardData[x][y].i;
 
-    Session.set('room', room);
+    Meteor.call('addNote', room._id, boardData[x][y]);
+
+    console.log('r', room);
   },
 });
 
@@ -82,7 +95,7 @@ let togglePlay = (function() {
 })();
 
 function play () {
-  let room = Session.get('room');
+  let room = Rooms.findOne();
 
   if (cursor > room.board.width) {
     cursor = 0;
@@ -105,7 +118,7 @@ function play () {
 }
 
 function noteDuration() {
-  return 60 / Session.get('room').tempo * 1000 / 4;
+  return 60 / Rooms.findOne().tempo * 1000 / 4;
 }
 
 var cursor = 0;
