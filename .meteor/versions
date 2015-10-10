@@ -49,6 +49,7 @@ meteor@1.1.9
 meteor-base@1.0.1
 minifiers@1.1.7
 minimongo@1.0.10
+mizzao:timesync@0.3.4
 mobile-experience@1.0.1
 mobile-status-bar@1.0.6
 mongo@1.1.2
