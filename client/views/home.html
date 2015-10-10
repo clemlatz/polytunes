@@ -3,12 +3,18 @@
 </head>
 
 <body>
+	<h1 class="brand-title">Polytunes</h1>
 	{{#if isLogged}}
 		{{> board}}
 		{{> controls}}
 	{{else}}
 		{{> login}}
 	{{/if}}
+	<br>
+	<div class="bottom">
+		<p class="copyright">by iwazaru, whollacsek, wmai and nbeydoon</p>
+		<iframe class="github-btn" src="https://ghbtns.com/github-btn.html?user=iwazaru&repo=polytunes&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+	</div>
 </body>
 
 <template name="board">
