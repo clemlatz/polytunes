@@ -81,6 +81,7 @@ Template.board.events({
 
     let room = Rooms.findOne();
 
+    boardData[y][x].surname = Session.get('surname');
     boardData[y][x].color = Session.get('color');
     boardData[y][x].i = !boardData[y][x].i;
 

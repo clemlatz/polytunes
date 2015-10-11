@@ -19,6 +19,7 @@ caching-compiler@1.0.0
 caching-html-compiler@1.0.2
 callback-hook@1.0.4
 check@1.0.6
+coffeescript@1.0.10
 ddp@1.2.2
 ddp-client@1.2.1
 ddp-common@1.2.1
@@ -46,6 +47,7 @@ less@2.5.0_3
 livedata@1.0.15
 localstorage@1.0.5
 logging@1.0.8
+lookback:tooltips@0.5.2
 meteor@1.1.9
 meteor-base@1.0.1
 minifiers@1.1.7
