@@ -42,7 +42,18 @@ Template.controls.helpers({
   }
 });
 
-Meteor.subscribe('playerCount');
+Template.login.helpers({
+  random_color: function() {
+    var colors = [];
+    for (color in COLOR_VALUES) {
+      colors.push({
+        name: color,
+        code: COLOR_VALUES[color]
+      });
+    }
+    return colors[parseInt(Math.random() * (colors.length))];
+  }
+});
 
 Template.login.events({
   'submit #login-form': event => {
