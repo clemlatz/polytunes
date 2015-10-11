@@ -32,6 +32,13 @@ Template.board.helpers({
   }
 });
 
+Template.controls.helpers({
+  players: function() {
+    let room = Rooms.findOne();
+    return room.players.length;
+  }
+});
+
 Template.login.events({
   'submit #login-form': event => {
     event.preventDefault();
