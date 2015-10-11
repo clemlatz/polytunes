@@ -1,5 +1,6 @@
 <head>
   <title>polytunes</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
 </head>
 
 <body>
@@ -40,21 +41,9 @@
 <template name="login">
 	<div class="login-container">
 		<form id="login-form">
-			<input type="text" placeholder="Enter your name..." name="surname" autofocus required>
-			<select name="color" required>
-        <option value="">Choose a color...</option>
-				<option value="RED">Red</option>
-				<option value="BLUE">Blue</option>
-				<option value="LIGHT_GREY">Light green</option>
-				<option value="TEAL">Teal</option>
-				<option value="YELLOW">Yellow</option>
-				<option value="ORANGE">Orange</option>
-				<option value="INDIGO">Indigo</option>
-				<option value="GREEN">Green</option>
-				<option value="PINK">Pink</option>
-				<option value="PURPLE">Purple</option>
-			</select>
-			<input type="submit" value="Valider">
+			<input type="text" placeholder="Hi, what's your name ?" name="surname" autofocus required>
+      <input type="hidden" name="color" value="{{ random_color.name }}">
+			<button type="submit">Continue</button>
 		</form>
 	</div>
 </template>
