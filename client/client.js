@@ -4,17 +4,15 @@ if (!room) return false; if (!boardData) { boardData = [];
 for (let y = 0; y < room.board.height ; y++) {
 let row = [];for (let x = 0; x < room.board.width; x++) row.push(cell(x, y));
 boardData.push(row)}}room.partition.forEach(function (cell) {
-boardData[cell.y][cell.x] = cell;
-});setNotes(room);return boardData}})
+boardData[cell.y][cell.x] = cell});setNotes(room);return boardData}})
 Template.controls.helpers({players() {var count=Connections.find().count();
 return (count > 1) ? count+" players" : count+" player"}})
 Template.login.helpers({random_color(){var colors = [];
 for (color in COLOR_VALUES)colors.push({name: color,code:COLOR_VALUES[color]});
 return colors[parseInt(Math.random() * (colors.length))]}});Template.login.
 events({'submit #login-form': ({preventDefault, target}) => {preventDefault();
-Meteor.call('addUser',Rooms.findOne()._id,{
-surname:target.surname.value,color:target.color.value});
-Session.setPersistent('authorization', "true");
+Meteor.call('addUser',Rooms.findOne()._id,{surname:target.surname.value,
+color:target.color.value});Session.setPersistent('authorization', "true");
 Session.setPersistent('surname', surname);
 Session.setPersistent('color', color);
 }});Template.board.events({'click td': ({target})=> {
@@ -29,8 +27,7 @@ cell=(x=0, y=0,userId='')=>({x,y,frequency:200,title:200,timestamp:new Date(),
 userId,i:false});let togglePlay = (function() {let handler = -1;
 return ()=> {if (handler === -1)
 handler = setInterval(play, 60/Rooms.findOne().tempo*1000/4);
-else {clearInterval(handler)
-handler = -1}}})();function play() {
+else {clearInterval(handler);handler = -1}}})();function play() {
 let room=Rooms.findOne();if (cursor >= room.board.width) cursor = 0;
 $('td').removeClass('p p1 p2');for(let y = 0; y < room.board.height; y++) {
 let cell = boardData[y][cursor];if (cell.i) {
