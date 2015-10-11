@@ -6,7 +6,10 @@ let boardData;
 
 Template.board.helpers({
   rows: function () {
-    let room = Rooms.findOne();
+   let room;
+    if (location.pathname.split('/')[1] === 'rooms')
+      room = Rooms.findOne({_id: location.pathname.split('/')[location.pathname.split('/').length - 1]});
+    else room = Rooms.findOne();
 
     if (!room)
       return false;
@@ -88,6 +91,7 @@ Template.board.events({
 Template.controls.events({
   'click #play': function (event, template) {
     togglePlay();
+    instrument.playNote(1); // Hack to fix sound in Safari iOS
   }
 });
 
