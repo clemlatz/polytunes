@@ -77,6 +77,8 @@ Template.login.events({
     Session.setPersistent('authorization', "true");
     Session.setPersistent('surname', surname);
     Session.setPersistent('color', color);
+
+    Meteor.call('keepalive', { id: Meteor.userId(), name: surname, color: color });
     return false;
   }
 });
