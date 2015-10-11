@@ -35,8 +35,8 @@ Meteor.publish(null, function() {
 Meteor.methods({
   keepalive: function (data) {
     if (!Connections.findOne({user_id: data.id})) {
-      console.log("User "+data.user_id+" enters");
-      Connections.insert({user_id: data.id, name: data.name});
+      console.log("User "+data.id+" enters");
+      Connections.insert({user_id: data.id, name: data.name, color: data.color});
     }
     Connections.update({user_id: data.id}, {$set: {last_seen: (new Date()).getTime()}});
   }
