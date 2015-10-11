@@ -32,6 +32,18 @@ Template.board.helpers({
   }
 });
 
+Template.controls.helpers({
+  players: function() {
+    var count = Connections.find().count();
+    if (count > 1) {
+      return count+" players";
+    }
+    return count+" player";
+  }
+});
+
+Meteor.subscribe('playerCount');
+
 Template.login.events({
   'submit #login-form': event => {
     event.preventDefault();
@@ -95,6 +107,11 @@ Meteor.startup( function() {
 
   instrument = new Instrument();
 });
+
+// client code: ping heartbeat every 5 seconds
+Meteor.setInterval(function () {
+  Meteor.call('keepalive', Meteor.userId());
+}, 5000);
 
 function cell(x, y, userId) {
   return {
