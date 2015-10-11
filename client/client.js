@@ -1,4 +1,4 @@
-Template.body.helpers({
+Template.view.helpers({
     isLogged: ()=> !Session.get('authorization') ? false : true
 })
 
@@ -6,7 +6,10 @@ let boardData;
 
 Template.board.helpers({
   rows: function () {
-    let room = Rooms.findOne();
+   let room;
+    if (location.pathname.split('/')[1] === 'rooms')
+      room = Rooms.findOne({_id: location.pathname.split('/')[location.pathname.split('/').length - 1]});
+    else room = Rooms.findOne();
 
     if (!room)
       return false;

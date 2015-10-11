@@ -12,7 +12,8 @@ if (Rooms.find().count() === 0) {
             wave: "sine",
             scale: SCALE_VALUES.PENTATONIC_MINOR
         },
-        tempo: 120
+        tempo: 120,
+        createdAt: new Date()
     });
 }
 

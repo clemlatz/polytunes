@@ -1,4 +1,22 @@
 Meteor.methods({
+	createRoom: ({ board, synthetizer, tempo} = {
+		board: {
+		    width: 16,
+		    height: 16
+		},
+		synthetizer: {
+		    base: 260,
+		    wave: "sine",
+		    scale: SCALE_VALUES.PENTATONIC_MINOR
+		},
+		tempo: 120
+	})=> {
+		var createdAt = new Date();
+		var partition = [];
+		var players = [];
+
+		Rooms.insert({isPublic, board, players, partition, synthetizer, tempo, createdAt});
+	},
 	addNote: (roomId, cell)=> {
 		var userId = Meteor.userId();
 		cell.userId = userId;
@@ -42,7 +60,9 @@ Meteor.methods({
 			}
 		});
 	},
-	deleteUser: (roomId, userId)=> {
+	deleteUser: (roomId)=> {
+		var userId = Meteor.userId();
+
 		Rooms.remove(roomId, {
 			$pull: {
 				players: { userId }
