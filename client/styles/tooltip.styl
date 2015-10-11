@@ -37,7 +37,7 @@
     content: "";
     display: block;
     bottom: -2 * $arrow-size;
-    left: calc(50% - $arrow-size);
+    left: "calc(50% - %s)" % $arrow-size;
     width: 0;
     height: 0;
     border: $arrow-size solid;
@@ -50,7 +50,7 @@
     &::after
       right: -2 *$arrow-size;
       left: auto;
-      bottom: calc(50% - $arrow-size);
+      bottom: "calc(50% - %s)" % $arrow-size;
       border-color: transparent transparent transparent $tooltip-color;
 
   &.tooltip--right .inner
@@ -58,7 +58,7 @@
 
     &::after
       left: -2 *$arrow-size;
-      bottom: calc(50% - $arrow-size);
+      bottom: "calc(50% - %s)" % $arrow-size;
       border-color: transparent $tooltip-color transparent transparent;
 
   &.tooltip--bottom .inner::after
