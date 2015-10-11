@@ -1,4 +1,4 @@
-Template.view.helpers({
+Template.body.helpers({
     isLogged: ()=> !Session.get('authorization') ? false : true
 })
 
