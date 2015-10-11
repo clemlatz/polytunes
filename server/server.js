@@ -33,12 +33,12 @@ Meteor.publish(null, function() {
 
 // server code: heartbeat method
 Meteor.methods({
-  keepalive: function (user_id) {
-    if (!Connections.findOne({user_id: user_id})) {
-      console.log("User "+user_id+" enters");
-      Connections.insert({user_id: user_id});
+  keepalive: function (data) {
+    if (!Connections.findOne({user_id: data.id})) {
+      console.log("User "+data.id+" enters");
+      Connections.insert({user_id: data.id, name: data.name, color: data.color});
     }
-    Connections.update({user_id: user_id}, {$set: {last_seen: (new Date()).getTime()}});
+    Connections.update({user_id: data.id}, {$set: {last_seen: (new Date()).getTime()}});
   }
 });
 
