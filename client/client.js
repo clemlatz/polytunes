@@ -91,6 +91,7 @@ Template.board.events({
 Template.controls.events({
   'click #play': function (event, template) {
     togglePlay();
+    instrument.playNote(1); // Hack to fix sound in Safari iOS
   }
 });
 
