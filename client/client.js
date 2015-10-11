@@ -36,12 +36,19 @@ Template.board.helpers({
 });
 
 Template.controls.helpers({
-  players: function() {
+  playerCount: function() {
     var count = Connections.find().count();
     if (count > 1) {
       return count+" players";
     }
     return count+" player";
+  },
+  playerList: function() {
+    var list = [];
+    Connections.find().forEach( function(player) {
+      list.push('<span class="player" style="color: '+COLOR_VALUES[player.color]+'">'+player.name+'</span>');
+    })
+    return list.join(' ');
   }
 });
 
@@ -126,7 +133,7 @@ Meteor.startup( function() {
 
 // client code: ping heartbeat every 5 seconds
 Meteor.setInterval(function () {
-  Meteor.call('keepalive', Meteor.userId());
+  Meteor.call('keepalive', { id: Meteor.userId(), name: Session.get('surname'), color: Session.get('color') });
 }, 5000);
 
 function cell(x, y, userId) {

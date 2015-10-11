@@ -30,6 +30,10 @@ Mostly Meteor first-timers, the Polytunes team is composed of:
 
 ## Changelog
 
+0.3
+* Add a tooltip with player name on cells
+* Add a tooltip with players list on players count
+
 0.2
 * Display number of connected players
 * Add iOS support

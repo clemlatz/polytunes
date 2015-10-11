@@ -12,7 +12,7 @@
 	{{/if}}
 	<br>
 	<div class="bottom">
-		<p class="copyright">	<h1 class="brand-title">polytunes 0.2</h1> by iwazaru, whollacsek, wmai and nbeydoon</p>
+		<p class="copyright">	<h1 class="brand-title">polytunes 0.3</h1> by iwazaru, whollacsek, wmai and nbeydoon</p>
 		<iframe class="github-btn" src="https://ghbtns.com/github-btn.html?user=iwazaru&repo=polytunes&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
 	</div>
 </body>
@@ -36,8 +36,10 @@
 <template name="controls">
   <div class="controls">
     <button id="play" class="e">play</button>
-    <span class="playerCount">{{players}}</span>
+    <span class="playerCount" data-tooltip="{{playerList}}">{{playerCount}}</span>
   </div>
+
+  {{ > tooltips }}
 </template>
 
 <template name="login">
