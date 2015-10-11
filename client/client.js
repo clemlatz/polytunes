@@ -97,30 +97,6 @@ Template.controls.events({
 });
 
 Meteor.startup( function() {
-  var Instrument = function() {
-  }
-
-  Instrument.prototype = {
-    getWad: function() {
-      return new Wad({source : 'sine'});
-    },
-    playNote: function(frequency) {
-      var wad = this.getWad()
-      var duration = noteDuration()
-      wad.play({
-        pitch : frequency,  // A4 is 440 hertz.
-        env : {
-          decay: duration / 1000 * .1,
-          hold: duration / 1000 * 1.1,
-          release: duration / 1000 * .75
-        },
-        reverb: {
-          wet: 1
-        }
-      });
-    }
-  }
-
   instrument = new Instrument();
 });
 
