@@ -126,7 +126,7 @@ Meteor.startup( function() {
 
 // client code: ping heartbeat every 5 seconds
 Meteor.setInterval(function () {
-  Meteor.call('keepalive', Meteor.userId());
+  Meteor.call('keepalive', { id: Meteor.userId(), name: Session.get('surname') });
 }, 5000);
 
 function cell(x, y, userId) {
