@@ -27,3 +27,12 @@ Mostly Meteor first-timers, the Polytunes team is composed of:
 * [whollacsek](https://github.com/whollacsek)
 * [nbeydoon](https://github.com/nbeydoon)
 * [wmai](https://github.com/wmai)
+
+## Changelog
+
+0.2
+* Display number of connected players
+* Add iOS support
+
+0.1
+* First release with minimum viable product
