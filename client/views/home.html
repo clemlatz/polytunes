@@ -1,5 +1,6 @@
 <head>
   <title>polytunes</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
 </head>
 
 <body>
@@ -14,7 +15,7 @@
 	{{/if}}
 	<br>
 	<div class="bottom">
-		<p class="copyright">	<h1 class="brand-title">polytunes</h1> by iwazaru, whollacsek, wmai and nbeydoon</p>
+		<p class="copyright">	<h1 class="brand-title">polytunes 0.2</h1> by iwazaru, whollacsek, wmai and nbeydoon</p>
 		<iframe class="github-btn" src="https://ghbtns.com/github-btn.html?user=iwazaru&repo=polytunes&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
 	</div>
 </template>
@@ -34,28 +35,18 @@
 </template>
 
 <template name="controls">
-  <button id="play" class="e">play</button>
-  <button id="add-room" class="e">create a new room</button>
+  <div class="controls">
+    <button id="play" class="e">play</button>
+    <span class="playerCount">{{players}}</span>
+  </div>
 </template>
 
 <template name="login">
 	<div class="login-container">
 		<form id="login-form">
-			<input type="text" placeholder="Enter your name..." name="surname" autofocus required>
-			<select name="color" required>
-        <option value="">Choose a color...</option>
-				<option value="RED">Red</option>
-				<option value="BLUE">Blue</option>
-				<option value="LIGHT_GREY">Light green</option>
-				<option value="TEAL">Teal</option>
-				<option value="YELLOW">Yellow</option>
-				<option value="ORANGE">Orange</option>
-				<option value="INDIGO">Indigo</option>
-				<option value="GREEN">Green</option>
-				<option value="PINK">Pink</option>
-				<option value="PURPLE">Purple</option>
-			</select>
-			<input type="submit" value="Valider">
+			<input type="text" placeholder="Hi, what's your name ?" name="surname" autofocus required>
+      <input type="hidden" name="color" value="{{ random_color.name }}">
+			<button type="submit">Continue</button>
 		</form>
 	</div>
 </template>
