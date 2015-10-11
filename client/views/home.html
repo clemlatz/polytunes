@@ -36,8 +36,10 @@
 <template name="controls">
   <div class="controls">
     <button id="play" class="e">play</button>
-    <span class="playerCount">{{players}}</span>
+    <span class="playerCount" data-tooltip="{{playerList}}">{{playerCount}}</span>
   </div>
+
+  {{ > tooltips }}
 </template>
 
 <template name="login">
