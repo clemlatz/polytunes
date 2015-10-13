@@ -32,6 +32,7 @@ Mostly Meteor first-timers, the Polytunes team is composed of:
 
 DEV
 * Added players name with colour under the board
+* Revamped play button to show current status (play/pause)
 * Added links to github repo and devpost page
 * Fixed player creation on login
 

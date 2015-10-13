@@ -13,7 +13,7 @@
 
   .brand-title {
     display: inline;
-    font-size: 1ema.;
+    font-size: 1em;
     font-weight: normal;
     text-align center
     margin 0
@@ -32,7 +32,7 @@
   
   .player-list {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 7px;
   }
 
   .player {
@@ -54,13 +54,19 @@
   }
 
   #play {
-    border-radius: 2px;
-    background-color: #607D8B;
-    border: 0px;
+    background-color: gray;
+    border: 1px solid gray;
+    font-family: inherit;
+    font-size: 10px;
     padding: 6px;
     color: white;
+    cursor: pointer;
   }
 
+  #play:focus {
+    outline: 0;
+  }
+  
   #add-room {
     border-radius: 2px;
     background-color: #607D8B;
@@ -81,11 +87,11 @@
     color: white;
     text-decoration: none;
     cursor: pointer;
-    color:  rgb(150,150,150);
+    color:  rgb(200,200,200);
   }
 
   a:hover, .pointer:hover {
-    color:  rgb(200,200,200);
+    color:  rgb(250,250,250);
   }
 
   #shareUrl {

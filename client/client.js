@@ -42,6 +42,9 @@ Template.controls.helpers({
       list.push('<span class="player '+player.color+'">'+player.name+'</span>');
     })
     return list.join(' ');
+  },
+  playButtonIcon: function() {
+    return (Session.get('playing') ? 'pause' : 'play');
   }
 });
 
@@ -123,10 +126,12 @@ let togglePlay = (function() {
   let handler = -1;
   return function() {
     if (handler === -1) {
+      Session.set("playing", true);
       handler = setInterval(function () {
         play();
       }, noteDuration());
     } else {
+      Session.set("playing", false);
       clearInterval(handler);
       handler = -1;
     }
