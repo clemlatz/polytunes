@@ -31,16 +31,17 @@ Mostly Meteor first-timers, the Polytunes team is composed of:
 ## Changelog
 
 DEV
-* Display players name and colour under the board
-* Fix player creation on login
+* Added players name with colour under the board
+* Added links to github repo and devpost page
+* Fixed player creation on login
 
 0.3
-* Add a tooltip with player name on cells
-* Add a tooltip with players list on players count
+* Added a tooltip with player name on cells
+* Added a tooltip with players list on players count
 
 0.2
 * Display number of connected players
-* Add iOS support
+* Added iOS support
 
 0.1
 * First release with minimum viable product
