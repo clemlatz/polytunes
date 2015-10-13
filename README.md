@@ -30,6 +30,10 @@ Mostly Meteor first-timers, the Polytunes team is composed of:
 
 ## Changelog
 
+DEV
+* Display players name and colour under the board
+* Fix player creation on login
+
 0.3
 * Add a tooltip with player name on cells
 * Add a tooltip with players list on players count

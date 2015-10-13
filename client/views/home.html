@@ -23,7 +23,7 @@
       {{#each rows}}
         <tr>
           {{#each .}}
-            <td data-tooltip="{{surname}}" class="x{{x}} y{{y}} {{#if i}}i {{color}}{{/if}}" data-x="{{x}}" data-y="{{y}}"></td>
+            <td class="x{{x}} y{{y}} {{#if i}}i {{color}}{{/if}}" data-x="{{x}}" data-y="{{y}}"></td>
           {{/each}}
         </tr>
       {{/each}}
@@ -35,8 +35,10 @@
 
 <template name="controls">
   <div class="controls">
+      <div class="player-list">
+        {{{ playerList }}}
+      </div>
     <button id="play" class="e">play</button>
-    <span class="playerCount" data-tooltip="{{playerList}}">{{playerCount}}</span>
   </div>
 
   {{ > tooltips }}

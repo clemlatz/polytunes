@@ -36,17 +36,10 @@ Template.board.helpers({
 });
 
 Template.controls.helpers({
-  playerCount: function() {
-    var count = Connections.find().count();
-    if (count > 1) {
-      return count+" players";
-    }
-    return count+" player";
-  },
   playerList: function() {
     var list = [];
     Connections.find().forEach( function(player) {
-      list.push('<span class="player" style="color: '+COLOR_VALUES[player.color]+'">'+player.name+'</span>');
+      list.push('<span class="player '+player.color+'">'+player.name+'</span>');
     })
     return list.join(' ');
   }

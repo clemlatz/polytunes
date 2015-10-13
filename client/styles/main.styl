@@ -36,18 +36,30 @@
   .controls {
     text-align: left;
     margin: auto;
-    width: 475px;
+    width: 502px;
   }
-
-  .playerCount {
-    color: rgba(255, 255, 255, .5);
-    float: right;
-    padding: 6px;
+  
+  .player-list {
+    display: flex;
+    margin-bottom: 10px;
   }
 
   .player {
+    color: white;
     display: inline-block;
-    padding: 2px;
+    flex-basis: 0;
+    flex-grow: 1;
+    margin: 0 3px;
+    padding: 5px 8px;
+    text-align: center;
+    opacity: 0.75;
+  }
+  
+  .player:first-child {
+    margin-left: 0;
+  }
+  .player:last-child {
+    margin-right: 0;
   }
 
   #play {
@@ -120,7 +132,6 @@
 
   table {
     margin: auto;
-    margin-bottom:  5px;
     border-spacing: 7px;
   }
 
