@@ -32,13 +32,6 @@ Mostly Meteor first-timers, the Polytunes team is composed of:
 
 ## Changelog
 
-<<<<<<< HEAD
-0.3
-* Add a tooltip with player name on cells
-* Add a tooltip with players list on players count
-
-0.2
-=======
 0.4 (2015-10-13)
 * Added players name with colour under the board
 * Revamped play button to show current status (play/pause)
@@ -50,7 +43,6 @@ Mostly Meteor first-timers, the Polytunes team is composed of:
 * Added a tooltip with players list on players count
 
 0.2 (2015-10-11)
->>>>>>> release/0.4
 * Display number of connected players
 * Added iOS support
 
