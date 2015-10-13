@@ -6,7 +6,9 @@ Polytunes is a music pad built using Meteor and HTML5's WebAudio API under 24h d
 
 ## Idea
 
-Polytunes is inspired by Yamaha's Tenori-on. The idea was to build a sequencer synthetizer using only HTML5 (no Flash or sound files) and make it online and multiplayer using Meteor. Multiple players can join and update the melody on-the-go. All changes are instantly pushed to all other players.
+Polytunes is inspired by Yamaha's Tenori-on and Steve Reich's experiments on [Phasing](https://en.wikipedia.org/wiki/Phasing_(music)). The idea was to build a sequencer/synthetizer using only HTML5 (no Flash or sound files) and make it online and multiplayer using Meteor. Multiple players can join and update the melody on-the-go. All changes are instantly pushed to all other players.
+
+[Learn more on Polytune's Devpost page](http://devpost.com/software/polytunes)
 
 ## Live demo
 
@@ -30,19 +32,19 @@ Mostly Meteor first-timers, the Polytunes team is composed of:
 
 ## Changelog
 
-DEV
+0.4 (2015-10-13)
 * Added players name with colour under the board
 * Revamped play button to show current status (play/pause)
 * Added links to github repo and devpost page
 * Fixed player creation on login
 
-0.3
+0.3 (2015-10-11)
 * Added a tooltip with player name on cells
 * Added a tooltip with players list on players count
 
-0.2
+0.2 (2015-10-11)
 * Display number of connected players
 * Added iOS support
 
-0.1
+0.1 (2015-10-10)
 * First release with minimum viable product
