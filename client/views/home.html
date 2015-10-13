@@ -12,9 +12,10 @@
 	{{/if}}
 	<br>
 	<div class="bottom">
-		<p class="copyright">	<h1 class="brand-title">polytunes 0.3</h1> by iwazaru, whollacsek, wmai and nbeydoon</p>
-		<iframe class="github-btn" src="https://ghbtns.com/github-btn.html?user=iwazaru&repo=polytunes&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-	</div>
+		<h1 class="brand-title">polytunes 0.4</h1> | 
+        <a href="https://github.com/iwazaru/polytunes" target="_blank">source</a> |
+        <a href="http://devpost.com/software/polytunes" target="_blank">about</a>
+    </div>
 </body>
 
 <template name="board">
@@ -23,7 +24,7 @@
       {{#each rows}}
         <tr>
           {{#each .}}
-            <td data-tooltip="{{surname}}" class="x{{x}} y{{y}} {{#if i}}i {{color}}{{/if}}" data-x="{{x}}" data-y="{{y}}"></td>
+            <td class="x{{x}} y{{y}} {{#if i}}i {{color}}{{/if}}" data-x="{{x}}" data-y="{{y}}"></td>
           {{/each}}
         </tr>
       {{/each}}
@@ -35,8 +36,10 @@
 
 <template name="controls">
   <div class="controls">
-    <button id="play" class="e">play</button>
-    <span class="playerCount" data-tooltip="{{playerList}}">{{playerCount}}</span>
+      <div class="player-list">
+        {{{ playerList }}}
+      </div>
+    <button id="play" class="e"><i class="fa fa-{{ playButtonIcon }}"></i></button>
   </div>
 
   {{ > tooltips }}

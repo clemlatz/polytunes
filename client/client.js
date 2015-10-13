@@ -36,19 +36,15 @@ Template.board.helpers({
 });
 
 Template.controls.helpers({
-  playerCount: function() {
-    var count = Connections.find().count();
-    if (count > 1) {
-      return count+" players";
-    }
-    return count+" player";
-  },
   playerList: function() {
     var list = [];
     Connections.find().forEach( function(player) {
-      list.push('<span class="player" style="color: '+COLOR_VALUES[player.color]+'">'+player.name+'</span>');
+      list.push('<span class="player '+player.color+'">'+player.name+'</span>');
     })
     return list.join(' ');
+  },
+  playButtonIcon: function() {
+    return (Session.get('playing') ? 'pause' : 'play');
   }
 });
 
@@ -130,10 +126,12 @@ let togglePlay = (function() {
   let handler = -1;
   return function() {
     if (handler === -1) {
+      Session.set("playing", true);
       handler = setInterval(function () {
         play();
       }, noteDuration());
     } else {
+      Session.set("playing", false);
       clearInterval(handler);
       handler = -1;
     }

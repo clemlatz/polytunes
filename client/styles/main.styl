@@ -6,23 +6,14 @@
   }
 
 .bottom {
-  color: cadetblue;
+  color: white;
   margin-top 15px
   opacity .5
-  .github-btn {
-    margin-top: 12px;
-    margin-right: -92px;
-    margin-bottom: 12px;
-  }
-}
-
-.bottom:hover {
-    opacity: 1
 }
 
   .brand-title {
     display: inline;
-    font-size: 18px;
+    font-size: 1em;
     font-weight: normal;
     text-align center
     margin 0
@@ -36,28 +27,47 @@
   .controls {
     text-align: left;
     margin: auto;
-    width: 475px;
+    width: 502px;
+  }
+  
+  .player-list {
+    display: flex;
+    margin-bottom: 7px;
   }
 
-  .playerCount {
-    color: rgba(255, 255, 255, .5);
-    float: right;
-    padding: 6px;
-  }
 
   .player {
+    color: white;
     display: inline-block;
-    padding: 2px;
+    flex-basis: 0;
+    flex-grow: 1;
+    margin: 0 3px;
+    padding: 5px 8px;
+    text-align: center;
+    opacity: 0.75;
+  }
+  
+  .player:first-child {
+    margin-left: 0;
+  }
+  .player:last-child {
+    margin-right: 0;
   }
 
   #play {
-    border-radius: 2px;
-    background-color: #607D8B;
-    border: 0px;
+    background-color: gray;
+    border: 1px solid gray;
+    font-family: inherit;
+    font-size: 10px;
     padding: 6px;
     color: white;
+    cursor: pointer;
   }
 
+  #play:focus {
+    outline: 0;
+  }
+  
   #add-room {
     border-radius: 2px;
     background-color: #607D8B;
@@ -78,11 +88,11 @@
     color: white;
     text-decoration: none;
     cursor: pointer;
-    color:  rgb(150,150,150);
+    color:  rgb(200,200,200);
   }
 
   a:hover, .pointer:hover {
-    color:  rgb(200,200,200);
+    color:  rgb(250,250,250);
   }
 
   #shareUrl {
@@ -120,7 +130,6 @@
 
   table {
     margin: auto;
-    margin-bottom:  5px;
     border-spacing: 7px;
   }
 
