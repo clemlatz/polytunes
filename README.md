@@ -12,15 +12,16 @@ Polytunes is inspired by Yamaha's Tenori-on and Steve Reich's experiments on [Ph
 
 ## Live demo
 
-https://polytunes.scalingo.io
+http://polytunes.es/
 
 ## Installation
 
-1. `git clone git@github.com:iwazaru/polytunes.git`
-2. `cd polytunes`
-3. `run meteor`
-4. Go to http://localhost:3000/
-5. Enjoy.
+1. Install Meteor `curl https://install.meteor.com/ | sh`
+2. Clone this repo `git clone git@github.com:iwazaru/polytunes.git`
+3. Change directory `cd polytunes`
+4. Run the app `run meteor`
+5. Go to http://localhost:3000/
+6. Enjoy.
 
 ## Team
 
