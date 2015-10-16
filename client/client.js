@@ -138,20 +138,39 @@ function play () {
     cursor = 0;
   }
 
-  $('td').removeClass('playing p1 p2');
+  // $('td').removeClass('playing p1 p2');
   for(let y = 0; y < room.board.height; y++) {
     let cell = boardData[y][cursor];
     if (cell.active) {
-      $(`td[data-id="{${cursor},${y}}"]`).toggleClass('playing');
+      let $cell = $(`td[data-id="{${cursor},${y}}"]`);
       instrument.playNote(cell.frequency);
+      visualEffect($cell, cursor, y);
     }
   }
 
   cursor++;
 }
 
-function noteDuration() {
+var visualEffect = function($cell, x, y) {
+	  
+    var around = $(`td[data-id="{${x-1},${y}}"], 
+      td[data-id="{${x+1},${y}}"], 
+      td[data-id="{${x},${y-1}}"], 
+      td[data-id="{${x},${y+1}}"]`);
+    
+    // Main cell effect
+    $cell.addClass('playing');
+    // around.addClass('around');
+    
+    setTimeout( function() {
+      $cell.removeClass('playing');
+      around.removeClass('around');
+    }, noteDuration() * 2);
+    
+	}
+
+var noteDuration = function() {
   return 60 / Rooms.findOne().tempo * 1000 / 4;
-}
+};
 
 var cursor = 0;

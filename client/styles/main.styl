@@ -111,114 +111,47 @@
     border-bottom:  1px solid rgb(100,100,100);
   }
 
-  .options {
-    text-align: left;
-    display: inline-block;
-    vertical-align: top;
-    margin: 5px;
-    border:  1px solid rgb(100,100,100);
-    padding: 10px;
-  }
+// Player colours
+&.RED {
+  background-color: #F44336;
+}
+&.BLUE {
+  background-color: #2196F3;
+}
+&.LIGHT_GREY {
+  background-color: #607D8B;
+}
+&.TEAL {
+  background-color: #009688;
+}
+&.YELLOW {
+  background-color: #FFEB3B;
+}
+&.ORANGE {
+  background-color: #FF5722;
+}
+&.INDIGO {
+  background-color: #3F51B5;
+}
+&.GREEN {
+  background-color: #1B5E20;
+}
+&.PINK {
+  background-color: #E91E63;
+}
+&.PURPLE {
+  background-color: #9C27B0;
+}
 
-  footer {
-    /*display: none;*/
-    font-size: 12px;
-    text-align: center;
-    color: rgb(100,100,100);
-  }
+.hidden {
+  display: none;
+}
 
-  table {
-    margin: auto;
-    border-spacing: 7px;
-  }
+p {
+  margin:  0;
+}
 
-  td {
-    width: 21px;
-    height: 21px;
-    border: 1px solid;
-    background: white;
-    opacity:  0.15;
-    cursor: pointer;
-  }
-
-  td:hover {
-    opacity: 0.1;
-  }
-
-  td.active:hover {
-    opacity: 0.4;
-  }
-
-  td.p2 {
-    opacity:  0.2;
-    /*box-shadow: 0px 0px 2px 2px rgba(75, 75, 75, .9);*/
-  }
-
-  td.p1 {
-    opacity: 0.3;
-    /*box-shadow: 0px 0px 2px 2px rgba(150, 150, 150, .9);*/
-  }
-
-  td.active { /* selected */
-    opacity:  0.5;
-  }
-
-  td.playing {
-    opacity:  0.9;
-    /*box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, .9);*/
-  }
-
-  .hidden {
-    display: none;
-  }
-
-  p {
-    margin:  0;
-  }
-
-  label {
-    width: 150px;
-    cursor:  pointer;
-  }
-
-  .RED {
-    background-color: #F44336;
-  }
-  .BLUE {
-    background-color: #2196F3;
-  }
-  .LIGHT_GREY {
-    background-color: #607D8B;
-  }
-  .TEAL {
-    background-color: #009688;
-  }
-  .YELLOW {
-    background-color: #FFEB3B;
-  }
-  .ORANGE {
-    background-color: #FF5722;
-  }
-  .INDIGO {
-    background-color: #3F51B5;
-  }
-  .GREEN {
-    background-color: #1B5E20;
-  }
-  .PINK {
-    background-color: #E91E63;
-  }
-  .PURPLE {
-    background-color: #9C27B0;
-  }
-
-/* Smaller than tablets */
-@media (max-width: 767px) {
-  td {
-    width: 12px;
-    height: 12px;
-  }
-  .controls {
-    width: 100%;
-  }
+label {
+  width: 150px;
+  cursor:  pointer;
 }
