@@ -1,0 +1,10 @@
+<template name="home">
+  <div class="centered">
+    <div class="welcome">
+      welcome to polytunes
+    </div>
+    {{#each rooms}}
+      <a class="btn" href="{{pathFor 'roomPlay'}}">join a public room</a>
+    {{/each}}
+  </div>
+</template>

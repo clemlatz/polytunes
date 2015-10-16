@@ -1,0 +1,10 @@
+<template name="roomPlay">
+  <div class="room">
+    {{#if isLogged}}
+      {{> board}}
+      {{> controls}}
+    {{else}}
+      {{> login}}
+    {{/if}}
+  </div>
+</template>
