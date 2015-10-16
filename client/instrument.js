@@ -1,6 +1,9 @@
 Instrument = class Instrument {
   getWad() {
-    return new Wad({source : 'sine'});
+    var settings = {
+      source : 'sine'
+    };
+    return new Wad(settings);
   }
 
   playNote(frequency) {
@@ -14,7 +17,7 @@ Instrument = class Instrument {
         release: duration / 1000 * .75
       },
       reverb: {
-        wet: 1
+        wet: 0
       }
     });
   }
