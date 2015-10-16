@@ -20,17 +20,20 @@ Template.board.helpers({
     if (!room)
       return false;
     
-    boardData = [], i = 0;;
+    boardData = [], i = 0, cellSize = getCellSize(room.board.width);
     for (let y = 0; y < room.board.height ; y++) {
       let row = [];
       for (let x = 0; x < room.board.width; x++) {
-        row.push(room.partition[i]);
+        let cell = room.partition[i];
+        cell.size = cellSize;
+        row.push(cell);
         i++;
       }
       boardData.push(row);
     }
     
     debug("Updating board");
+    
     return boardData;
   }
 });
@@ -174,3 +177,16 @@ var noteDuration = function() {
 };
 
 var cursor = 0;
+
+var getCellSize = function(boardSize) {
+  var windowWidth = $(window).width();
+    boardWidth = windowWidth,
+    cellWidth = 0,
+    borderSpacing = 5;
+    
+  if (boardWidth > 500) {
+    boardWidth = 500;
+  }
+  
+  return Math.floor((boardWidth - (borderSpacing * (boardSize + 2))) / boardSize);
+}

@@ -3,20 +3,25 @@
     background:  black;
     font-family: monospace;
     text-align: center;
+    margin: 0;
   }
 
-.bottom {
-  color: white;
-  margin-top 15px
-  opacity .5
-}
+  .main {
+    max-width: 500px;
+    margin: auto;
+    width: 100%;
+  }
+
+  .bottom {
+    color: white;
+    opacity .5;
+  }
 
   .brand-title {
-    display: inline;
     font-size: 1em;
     font-weight: normal;
-    text-align center
-    margin 0
+    text-align center;
+    margin: 5px auto;
   }
 
   #body {
@@ -27,7 +32,7 @@
   .controls {
     text-align: left;
     margin: auto;
-    width: 502px;
+    width: 100%;
   }
   
   .player-list {
@@ -36,31 +41,43 @@
   }
 
   .player {
+    box-sizing: border-box;
+    border-radius: 1px;
     color: white;
     display: inline-block;
     flex-basis: 0;
     flex-grow: 1;
-    margin: 0 3px;
+    margin: 0 3.5px;
+    max-height: 25px
+    overflow: hidden;
     padding: 5px 8px;
     text-align: center;
     opacity: 0.75;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .player:first-child {
-    margin-left: 0;
+    margin-left: 7px;
   }
+  
   .player:last-child {
-    margin-right: 0;
+    margin-right: 7px;
   }
 
   #play {
     background-color: gray;
     border: 1px solid gray;
-    font-family: inherit;
-    font-size: 10px;
-    padding: 6px;
+    border-radius: 1px;
     color: white;
     cursor: pointer;
+    font-family: inherit;
+    font-size: 10px;
+    margin-left: 7px;
+    height: 25px;
+    padding: 6px;
+    width: 25px;
   }
 
   #play:focus {
@@ -154,4 +171,11 @@ p {
 label {
   width: 150px;
   cursor:  pointer;
+}
+
+/* Smaller than tablets */
+@media (max-width: 767px) {
+  .controls {
+    width: 100%;
+  }
 }

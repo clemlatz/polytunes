@@ -1,22 +1,24 @@
 <head>
   <title>polytunes</title>
-  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta name="viewport" content="width=device-width">
 </head>
 
 <body>
-	{{#if isLogged}}
-		{{> board}}
-		{{> controls}}
-	{{else}}
-		{{> login}}
-	{{/if}}
-	<br>
-	<div class="bottom">
-		<h1 class="brand-title">polytunes 0.4</h1> | 
-        <a href="https://www.facebook.com/playpolytunes" target="_blank">facebook</a> |
-        <a href="https://github.com/iwazaru/polytunes" target="_blank">source</a> |
-        <a href="http://devpost.com/software/polytunes" target="_blank">about</a>
+  <div class="main">
+  	{{#if isLogged}}
+  		{{> board}}
+  		{{> controls}}
+  	{{else}}
+  		{{> login}}
+  	{{/if}}
+  	<br>
+  	<div class="bottom">
+  		<h1 class="brand-title">polytunes 0.4</h1>
+      <a href="https://www.facebook.com/playpolytunes" target="_blank">facebook</a> |
+      <a href="https://github.com/iwazaru/polytunes" target="_blank">source</a> |
+      <a href="http://devpost.com/software/polytunes" target="_blank">about</a>
     </div>
+  </div>
 </body>
 
 <template name="board">
@@ -25,7 +27,7 @@
       {{#each rows}}
         <tr>
           {{#each .}}
-            <td class="{{#if active}}active {{color}}{{/if}}" data-id="{{id}}"></td>
+            <td class="{{#if active}}active {{color}}{{/if}}" data-id="{{id}}" style="width:{{size}}px;height:{{size}}px;"></td>
           {{/each}}
         </tr>
       {{/each}}
@@ -36,10 +38,10 @@
 </template>
 
 <template name="controls">
+  <div class="player-list">
+    {{{ playerList }}}
+  </div>
   <div class="controls">
-      <div class="player-list">
-        {{{ playerList }}}
-      </div>
     <button id="play" class="e"><i class="fa fa-{{ playButtonIcon }}"></i></button>
   </div>
 

@@ -1,14 +1,17 @@
 table {
   margin: auto;
-  border-spacing: 7px;
+  // border-collapse: collapse;
+  border-spacing: 7px;    
   
   td {
-    width: 21px;
-    height: 21px;
-    border: 1px solid;
+    border-radius: 1px
+    border-spacing: 0;
     background: white;
-    opacity:  0.15;
     cursor: pointer;
+    height: 21px;
+    opacity: .15;
+    padding: 0;
+    width: 21px;
     // transition-delay: .5s;
     
     &:hover {
@@ -44,14 +47,13 @@ table {
   }
 }
 
-
 /* Smaller than tablets */
 @media (max-width: 767px) {
-  td {
-    width: 12px;
-    height: 12px;
-  }
-  .controls {
-    width: 100%;
+  table {
+    
+    td {
+      width: 13px;
+      height: 13px;
+    }
   }
 }
