@@ -12,41 +12,25 @@ let boardData;
 
 Template.board.helpers({
   rows: function () {
-   let room;
+    let room;
     if (location.pathname.split('/')[1] === 'rooms')
       room = Rooms.findOne({_id: location.pathname.split('/')[location.pathname.split('/').length - 1]});
     else room = Rooms.findOne();
 
     if (!room)
       return false;
-
-    // Initiliaze the board if doesn't exits
-    if (!boardData) {
-      boardData = [];
-      for (let y = 0; y < room.board.height ; y++) {
-        let row = [];
-        for (let x = 0; x < room.board.width; x++) {
-          row.push(new Cell(x, y));
-        }
-        boardData.push(row)
+    
+    boardData = [], i = 0;;
+    for (let y = 0; y < room.board.height ; y++) {
+      let row = [];
+      for (let x = 0; x < room.board.width; x++) {
+        row.push(room.partition[i]);
+        i++;
       }
-    }
-
-    // Set active cells
-    room.partition.forEach(function (cell) {
-      boardData[cell.y][cell.x] = cell;
-    });
-
-    // Give each cell it's note frequency
-    var notes = getScaleNotes(room.synthetizer.scale, room.synthetizer.base, room.board.height);
-    for(x = 0; x < room.board.width; x++) {
-      for(y = 0; y < room.board.height; y++) {
-        boardData[x][y].frequency = notes[room.board.height-x-1];
-      }
+      boardData.push(row);
     }
     
     debug("Updating board");
-    
     return boardData;
   }
 });
@@ -97,25 +81,21 @@ Template.login.events({
 
 Template.board.events({
   'click td': function (event, template) {
-    let cell = $(event.target);
-    let x = cell.data('x');
-    let y = cell.data('y');
-    let room = Rooms.findOne();
+    let room = Rooms.findOne(),
+      target = $(event.target),
+      cell = { id: target.data('id') };
 
-    // boardData[y][x].surname = Session.get('surname');
-    boardData[y][x].color = Session.get('color');
-    // boardData[y][x].i = !boardData[y][x].i;
-
-    if (cell.hasClass("active")) {
-      cell.addClass("false"); // optimistic ui
-      boardData[y][x].active = false;
+    if (target.hasClass('active')) {
+      target.removeClass("active"); // optimistic ui
+      cell.active = false;
     } else {
-      cell.addClass("active "+boardData[y][x].color); // optimistic ui
-      boardData[y][x].active = true;
+      cell.color = Session.get('color');
+      cell.active = true;
+      target.addClass("active "+cell.color); // optimistic ui
     }
-
-    Meteor.call('setNote', room._id, boardData[y][x]);
-
+    
+    debug("Updating cell "+cell.id);
+    Meteor.call('updateCell', room._id, cell);
   },
 });
 
@@ -158,13 +138,11 @@ function play () {
     cursor = 0;
   }
 
-  $('td').removeClass('p p1 p2');
+  $('td').removeClass('playing p1 p2');
   for(let y = 0; y < room.board.height; y++) {
     let cell = boardData[y][cursor];
     if (cell.active) {
-      $(`td[data-x="${cursor}"][data-y="${y}"]`).toggleClass('p');
-      // cell.p = true;
-      // visualEffect(cell);
+      $(`td[data-id="{${cursor},${y}}"]`).toggleClass('playing');
       instrument.playNote(cell.frequency);
     }
   }
@@ -177,25 +155,3 @@ function noteDuration() {
 }
 
 var cursor = 0;
-
-// Calculate note from base and interval
-function calcNote(base,interval) {
-  return Math.round(base * Math.pow(2,interval/12)*100)/100;
-}
-
-// Get 'max' notes of 'scale' from 'base'
-function getScaleNotes(scale,base,max) {
-  interval = 0;
-  ni = 0;
-  notes = new Array();
-  ints = new Array();
-  for(n = 0; n < max; n++) {
-    note = calcNote(base,interval);
-    interval = interval + scale[ni];
-    ints[n] = scale[ni];
-    notes[n] = note;
-    ni++;
-    if (ni >= scale.length) ni = 0;
-  }
-  return notes;
-}
