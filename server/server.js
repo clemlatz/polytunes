@@ -10,7 +10,7 @@ if (Rooms.find().count() === 0) {
         synthetizer: {
             base: 260,
             wave: "sine",
-            scale: SCALE_VALUES.PENTATONIC_MINOR
+            scale: SCALE_VALUES.MAJOR
         },
         tempo: 120,
         createdAt: new Date()

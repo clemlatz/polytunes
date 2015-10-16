@@ -32,6 +32,10 @@ Mostly Meteor first-timers, the Polytunes team is composed of:
 
 ## Changelog
 
+DEV
+* Revamped note handling to improve performances
+* Added a link to Facebook
+
 0.4 (2015-10-13)
 * Added players name with colour under the board
 * Revamped play button to show current status (play/pause)

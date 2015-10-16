@@ -17,17 +17,14 @@ Meteor.methods({
 
 		Rooms.insert({isPublic, board, players, partition, synthetizer, tempo, createdAt});
 	},
-	addNote: (roomId, cell)=> {
-		var userId = Meteor.userId();
+	setNote: (roomId, cell)=> {
+    
+    // Add userId
+    var userId = Meteor.userId();
 		cell.userId = userId;
-		Rooms.update(roomId, {
-			$push: {
-				partition: cell
-			}
-		});
-	},
-	updateNote: (roomId, cell)=> {
-		Rooms.upsert({
+		
+    // If cell already exists, delete it
+		var result = Rooms.update({
 			_id: roomId,
 			'partition.x': cell.x,
 			'partition.y': cell.y,
@@ -36,16 +33,19 @@ Meteor.methods({
 				'partition.$': cell
 			}
 		});
-	},
-	deleteNote: (roomId, {x, y})=> {
-		Rooms.update(roomId, {
-				$pull: {
-					partition: {
-						x,
-						y
-					}
-				}
-			});
+    
+    // Else, create a new one
+    if (!result) {
+  		Rooms.update(roomId, {
+  			$push: {
+  				partition: cell
+  			}
+  		});
+      console.log("Added note");
+    } else {
+      console.log("Updated note");
+    }
+    
 	},
 	addUser: (roomId, {surname, color})=> {
 		var userId = Meteor.userId();
