@@ -186,6 +186,7 @@ var getCellSize = function(boardSize) {
     
   if (boardWidth > 500) {
     boardWidth = 500;
+    borderspacing = 0;
   }
   
   return Math.floor((boardWidth - (borderSpacing * (boardSize + 2))) / boardSize);

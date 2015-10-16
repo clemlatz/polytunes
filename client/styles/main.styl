@@ -1,9 +1,17 @@
-
+  @font-face {
+    font-family: 'Roboto-Regular'; 
+    src: url("/fonts/Roboto-Light.ttf");
+  }
+  
   body {
     background:  black;
-    font-family: monospace;
+    font-family: 'Roboto-Regular'; 
     text-align: center;
     margin: 0;
+  }
+  
+  * {
+    font-family: 'Roboto-Regular', monospace;
   }
 
   .main {
@@ -16,12 +24,17 @@
     color: white;
     opacity .5;
   }
+  
+  .links {
+    font-size: 1.5em;
+  }
 
   .brand-title {
-    font-size: 1em;
+    font-family: 'Roboto-Regular';
+    font-size: 1.2em;
     font-weight: normal;
     text-align center;
-    margin: 5px auto;
+    margin: 10px auto;
   }
 
   #body {

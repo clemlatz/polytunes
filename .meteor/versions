@@ -51,6 +51,7 @@ logging@1.0.8
 lookback:tooltips@0.5.2
 meteor@1.1.9
 meteor-base@1.0.1
+meyerweb-reset@1.0.4
 minifiers@1.1.7
 minimongo@1.0.10
 mizzao:timesync@0.3.4
