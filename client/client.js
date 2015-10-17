@@ -88,6 +88,15 @@ Template.login.events({
   }
 });
 
+// Stop playing if mouse button is release outside of board
+Template.body.events({
+  'mouseup': function(event, template) {
+    if (typeof instrument !== "undefined") {
+      instrument.stopPlayingNote();
+    }
+  }
+});
+
 Template.board.events({
   
   // Play note on mouse down if playback is off
@@ -96,7 +105,7 @@ Template.board.events({
     
     // Play note if board is not currently playing
     if (Session.get("playing") == false && !target.hasClass('active')) {
-      instrument.playNote(target.data('frequency'));
+      instrument.startPlayingNote(target.data('frequency'));
     }
   },
   
@@ -106,8 +115,13 @@ Template.board.events({
     
     // Play note if board is not currently playing
     if (Session.get("playing") == false && !target.hasClass('active') && event.buttons == 1) {
-      instrument.playNote(target.data('frequency'));
+      instrument.startPlayingNote(target.data('frequency'));
     }
+  },
+  
+  // Stop playing note if mouse button is released
+  'mouseup': function() {
+    instrument.stopPlayingNote();
   },
   
   // Add note to the board when mouse button is released
