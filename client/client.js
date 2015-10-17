@@ -124,7 +124,7 @@ Meteor.setInterval(function () {
   Meteor.call('keepalive', { id: Meteor.userId(), name: Session.get('surname'), color: Session.get('color') });
 }, 5000);
 
-let togglePlay = (function() {
+togglePlay = (function() {
   let handler = -1;
   return function() {
     if (handler === -1) {
