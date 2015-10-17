@@ -1,8 +1,8 @@
 <template name="home">
   <div class="centered">
-    <div class="welcome">
+    <h1 class="welcome">
       welcome to polytunes
-    </div>
+    </h1>
     {{#each rooms}}
       <a class="btn" href="{{pathFor 'roomPlay'}}">join a public room</a>
     {{/each}}
