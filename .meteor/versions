@@ -38,6 +38,7 @@ fortawesome:fontawesome@4.4.0
 geojson-utils@1.0.4
 grigio:babel@0.1.8
 grove:call-async@1.0.0
+gwendall:body-events@0.1.6
 hot-code-push@1.0.0
 html-tools@1.0.5
 htmljs@1.0.5
