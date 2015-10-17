@@ -1,0 +1,56 @@
+table {
+  margin: auto;
+  border-collapse: separate;
+  border-spacing: 7px;
+  cursor: pointer;
+  
+  td {
+    border-radius: 1px
+    border-spacing: 0;
+    background: white;
+    cursor: pointer;
+    height: 21px;
+    opacity: .15;
+    padding: 0;
+    width: 21px;
+    // transition-delay: .5s;
+    
+    &:hover {
+      opacity: 0.1;
+    }
+    
+    &.around {
+      opacity: 0.3;
+    }
+    
+    &.active {
+      opacity:  0.5;
+      
+      &:hover {
+        opacity: 0.4;
+      }
+    }
+    
+    &.playing {
+      opacity:  1;
+      transition-property: opacity;
+      transition-duration: .25s;
+      
+      &:hover {
+        opacity: 1;
+      }
+    }
+    
+    &.delay {
+      transition-property: opacity;
+      transition-delay: .25s;
+    }
+  }
+}
+
+/* Smaller than tablets */
+@media (max-width: 767px) {
+  table {
+    border-spacing: 5px;
+  }
+}

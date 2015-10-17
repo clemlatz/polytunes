@@ -1,33 +1,65 @@
-
+  @font-face {
+    font-family: 'Roboto-Light'; 
+    src: url("/fonts/Roboto-Light.ttf");
+  }
+  
   body {
     background:  black;
-    font-family: monospace;
+    font-family: 'Roboto-Light'; 
     text-align: center;
+    margin: 0;
+    color: white;
+  }
+  
+  * {
+    font-family: 'Roboto-Light', monospace;
   }
 
-.bottom {
-  color: white;
-  margin-top 15px
-  opacity .5
-}
+  .main {
+    max-width: 500px;
+    margin: auto;
+    width: 100%;
+  }
+
+  .bottom {
+    color: white;
+    opacity .5;
+  }
+  
+  .links {
+    font-size: 1.5em;
+  }
 
   .brand-title {
-    display: inline;
-    font-size: 1em;
+    font-family: 'Roboto-Light';
+    font-size: 1.2em;
     font-weight: normal;
-    text-align center
-    margin 0
+    text-align center;
+    margin: 10px auto;
   }
 
-  #body {
-    width: 768px;
-    margin: auto;
+  h1 {
+    font-size: 2em;
+    margin: 30px;
+    line-height 1.3em
+  }
+  
+  .centered {
+    left: 50%;
+    position absolute
+    top 50%
+    transform translate(-50%, -50%)
+    width: 100%;
+    
+    h1 {
+      margin-top 0
+    }
   }
 
   .controls {
     text-align: left;
     margin: auto;
-    width: 502px;
+    width: 100%;
   }
   
   .player-list {
@@ -37,31 +69,43 @@
 
 
   .player {
+    box-sizing: border-box;
+    border-radius: 1px;
     color: white;
     display: inline-block;
     flex-basis: 0;
     flex-grow: 1;
-    margin: 0 3px;
+    margin: 0 3.5px;
+    max-height: 25px
+    overflow: hidden;
     padding: 5px 8px;
     text-align: center;
     opacity: 0.75;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .player:first-child {
-    margin-left: 0;
+    margin-left: 7px;
   }
+  
   .player:last-child {
-    margin-right: 0;
+    margin-right: 7px;
   }
 
   #play {
     background-color: gray;
     border: 1px solid gray;
-    font-family: inherit;
-    font-size: 10px;
-    padding: 6px;
+    border-radius: 1px;
     color: white;
     cursor: pointer;
+    font-family: inherit;
+    font-size: 10px;
+    margin-left: 7px;
+    height: 25px;
+    padding: 6px;
+    width: 25px;
   }
 
   #play:focus {
@@ -112,113 +156,68 @@
     border-bottom:  1px solid rgb(100,100,100);
   }
 
-  .options {
-    text-align: left;
-    display: inline-block;
-    vertical-align: top;
-    margin: 5px;
-    border:  1px solid rgb(100,100,100);
-    padding: 10px;
-  }
+// Player colours
+&.RED {
+  background-color: #F44336;
+}
+&.BLUE {
+  background-color: #2196F3;
+}
+&.LIGHT_GREY {
+  background-color: #607D8B;
+}
+&.TEAL {
+  background-color: #009688;
+}
+&.YELLOW {
+  background-color: #FFEB3B;
+}
+&.ORANGE {
+  background-color: #FF5722;
+}
+&.INDIGO {
+  background-color: #3F51B5;
+}
+&.GREEN {
+  background-color: #1B5E20;
+}
+&.PINK {
+  background-color: #E91E63;
+}
+&.PURPLE {
+  background-color: #9C27B0;
+}
 
-  footer {
-    /*display: none;*/
-    font-size: 12px;
-    text-align: center;
-    color: rgb(100,100,100);
-  }
+.hidden {
+  display: none;
+}
 
-  table {
-    margin: auto;
-    border-spacing: 7px;
-  }
+p {
+  margin:  0;
+}
 
-  td {
-    width: 21px;
-    height: 21px;
-    border: 1px solid;
-    background: white;
-    opacity:  0.15;
-    cursor: pointer;
-  }
+input,
+button,
+.btn
+  background-color black
+  border 1px solid rgba(255, 255, 255, .5)
+  box-sizing border-box
+  display block
+  font-family 'Roboto-Light'
+  font-size 1em
+  color white
+  margin 10px auto
+  padding 5px 10px
+  width 100%
+  max-width 200px
 
-  td:hover {
-    opacity: 0.1;
-  }
-
-  td.i:hover {
-    opacity: 0.4;
-  }
-
-  td.p2 {
-    opacity:  0.2;
-    /*box-shadow: 0px 0px 2px 2px rgba(75, 75, 75, .9);*/
-  }
-
-  td.p1 {
-    opacity: 0.3;
-    /*box-shadow: 0px 0px 2px 2px rgba(150, 150, 150, .9);*/
-  }
-
-  td.i { /* selected */
-    opacity:  0.5;
-  }
-
-  td.p {
-    opacity:  0.9;
-    /*box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, .9);*/
-  }
-
-  .hidden {
-    display: none;
-  }
-
-  p {
-    margin:  0;
-  }
-
-  label {
-    width: 150px;
-    cursor:  pointer;
-  }
-
-  .RED {
-    background-color: #F44336;
-  }
-  .BLUE {
-    background-color: #2196F3;
-  }
-  .LIGHT_GREY {
-    background-color: #607D8B;
-  }
-  .TEAL {
-    background-color: #009688;
-  }
-  .YELLOW {
-    background-color: #FFEB3B;
-  }
-  .ORANGE {
-    background-color: #FF5722;
-  }
-  .INDIGO {
-    background-color: #3F51B5;
-  }
-  .GREEN {
-    background-color: #1B5E20;
-  }
-  .PINK {
-    background-color: #E91E63;
-  }
-  .PURPLE {
-    background-color: #9C27B0;
-  }
+label {
+  width: 150px;
+  cursor:  pointer;
+}
 
 /* Smaller than tablets */
 @media (max-width: 767px) {
-  td {
-    width: 12px;
-    height: 12px;
-  }
   .controls {
     width: 100%;
   }

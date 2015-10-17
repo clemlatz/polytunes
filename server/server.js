@@ -1,23 +1,8 @@
 if (Rooms.find().count() === 0) {
-    Rooms.insert({
-        isPublic: true,
-        board: {
-            width: 16,
-            height: 16
-        },
-        players: [],
-        partition: [],
-        synthetizer: {
-            base: 260,
-            wave: "sine",
-            scale: SCALE_VALUES.PENTATONIC_MINOR
-        },
-        tempo: 120,
-        createdAt: new Date()
-    });
+    Meteor.call('createRoom');
 }
 
-Meteor.publish(null, function() {
+Meteor.publish('rooms', function() {
     return Rooms.find();
 });
 
@@ -36,7 +21,7 @@ Meteor.methods({
   keepalive: function (data) {
     if (!data.name) return
     if (!Connections.findOne({user_id: data.id})) {
-      console.log("User "+data.id+" enters");
+      console.log("User "+data.name+" enters");
 
       Connections.insert({user_id: data.id, name: data.name, color: data.color});
     }

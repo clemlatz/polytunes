@@ -1,52 +1,52 @@
 Meteor.methods({
-	createRoom: ({ board, synthetizer, tempo} = {
-		board: {
-		    width: 16,
-		    height: 16
-		},
-		synthetizer: {
-		    base: 260,
-		    wave: "sine",
-		    scale: SCALE_VALUES.PENTATONIC_MINOR
-		},
-		tempo: 120
-	})=> {
-		var createdAt = new Date();
-		var partition = [];
-		var players = [];
-
-		Rooms.insert({isPublic, board, players, partition, synthetizer, tempo, createdAt});
+	createRoom: (room) => {
+		room = room || {
+        isPublic: true,
+        board: {
+            width: 16,
+            height: 16
+        },
+        players: [],
+        partition: [],
+        synthetizer: {
+            base: 260,
+            wave: "sine",
+            scale: SCALE_VALUES.MAJOR
+        },
+        tempo: 120,
+        createdAt: new Date()
+    };
+    
+    let music = new Music();
+    let notes = music.getScaleNotes(room.synthetizer.scale, room.synthetizer.base, room.board.height);
+    for (let y = 0; y < room.board.height; y++) {
+      for (let x = 0; x < room.board.width; x++) {
+        let frequency = notes[room.board.width-y-1];
+        room.partition.push(new Cell(x,y,frequency));
+      }
+    }
+    
+    Rooms.insert(room);
 	},
-	addNote: (roomId, cell)=> {
-		var userId = Meteor.userId();
-		cell.userId = userId;
-		Rooms.update(roomId, {
-			$push: {
-				partition: cell
-			}
-		});
+  
+	updateCell: (roomId, cell)=> {
+		
+    let result = Rooms.update(
+  		{	_id: roomId,
+  			'partition.id': cell.id
+		  }, 
+      { $set: { 
+        'partition.$.active': cell.active,
+        'partition.$.color': cell.color
+      } }
+		);
+    if (result) {
+      console.log(`Updated cell [${cell.id}] : ${cell.active}`);
+    } else {
+      console.log(`An error occured while updating cell [${cell.id}] : ${cell.active}`);
+    }
 	},
-	updateNote: (roomId, cell)=> {
-		Rooms.upsert({
-			_id: roomId,
-			'partition.x': cell.x,
-			'partition.y': cell.y,
-		}, {
-			$set: {
-				'partition.$': cell
-			}
-		});
-	},
-	deleteNote: (roomId, {x, y})=> {
-		Rooms.update(roomId, {
-				$pull: {
-					partition: {
-						x,
-						y
-					}
-				}
-			});
-	},
+  
 	addUser: (roomId, {surname, color})=> {
 		var userId = Meteor.userId();
 

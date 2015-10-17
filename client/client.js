@@ -1,36 +1,44 @@
-Template.body.helpers({
-    isLogged: ()=> !Session.get('authorization') ? false : true
-})
+function debug(msg) {
+  if (Session.get('debug') === true) {
+    console.log(msg);
+  }
+}
+
+Template.home.helpers({
+  rooms: function() {
+    return Rooms.find();
+  }
+});
+
+Template.roomPlay.helpers({
+  isLogged: ()=> !Session.get('authorization') ? false : true
+});
 
 let boardData;
-
 Template.board.helpers({
   rows: function () {
-   let room;
+    let room;
     if (location.pathname.split('/')[1] === 'rooms')
       room = Rooms.findOne({_id: location.pathname.split('/')[location.pathname.split('/').length - 1]});
     else room = Rooms.findOne();
 
     if (!room)
       return false;
-
-    if (!boardData) {
-      boardData = [];
-      for (let y = 0; y < room.board.height ; y++) {
-        let row = [];
-        for (let x = 0; x < room.board.width; x++) {
-          row.push(cell(x, y));
-        }
-        boardData.push(row)
+    
+    boardData = [], i = 0, cellSize = getCellSize(room.board.width);
+    for (let y = 0; y < room.board.height ; y++) {
+      let row = [];
+      for (let x = 0; x < room.board.width; x++) {
+        let cell = room.partition[i];
+        cell.size = cellSize;
+        row.push(cell);
+        i++;
       }
+      boardData.push(row);
     }
-
-    room.partition.forEach(function (cell) {
-      boardData[cell.y][cell.x] = cell;
-    });
-
-    setNotes();
-
+    
+    debug("Updating board");
+    
     return boardData;
   }
 });
@@ -44,7 +52,7 @@ Template.controls.helpers({
     return list.join(' ');
   },
   playButtonIcon: function() {
-    return (Session.get('playing') ? 'pause' : 'play');
+    return (Session.get('playing') === true ? 'pause' : 'play');
   }
 });
 
@@ -61,8 +69,16 @@ Template.login.helpers({
   }
 });
 
+Template.login.rendered = function() {
+  if(!this._rendered) {
+    this._rendered = true;
+    $('#username').focus();
+  }
+}
+
 Template.login.events({
   'submit #login-form': event => {
+    console.log("plop");
     event.preventDefault();
 
     const surname = event.target.surname.value;
@@ -79,18 +95,59 @@ Template.login.events({
   }
 });
 
+// Stop playing if mouse button is release outside of board
+Template.body.events({
+  'mouseup': function(event, template) {
+    if (typeof instrument !== "undefined") {
+      instrument.stopPlayingNote();
+    }
+  }
+});
+
 Template.board.events({
-  'click td': function (event, template) {
-    let x = $(event.target).data('x');
-    let y = $(event.target).data('y');
+  
+  // Play note on mouse down if playback is off
+  'mousedown td': function(event, template) {
+    let target = $(event.target);
+    
+    // Play note if board is not currently playing
+    if (Session.get("playing") == false && !target.hasClass('active')) {
+      instrument.startPlayingNote(target.data('frequency'));
+    }
+  },
+  
+  // Play note on mouse down if playback is off & mouse button is pressed
+  'mouseover td': function(event, template) {
+    let target = $(event.target);
+    
+    // Play note if board is not currently playing
+    if (Session.get("playing") == false && !target.hasClass('active') && event.buttons == 1) {
+      instrument.startPlayingNote(target.data('frequency'));
+    }
+  },
+  
+  // Stop playing note if mouse button is released
+  'mouseup': function() {
+    instrument.stopPlayingNote();
+  },
+  
+  // Add note to the board when mouse button is released
+  'mouseup td': function (event, template) {
+    let room = Rooms.findOne(),
+      target = $(event.target),
+      cell = { id: target.data('id') };
 
-    let room = Rooms.findOne();
-
-    boardData[y][x].surname = Session.get('surname');
-    boardData[y][x].color = Session.get('color');
-    boardData[y][x].i = !boardData[y][x].i;
-
-    Meteor.call('addNote', room._id, boardData[y][x]);
+    if (target.hasClass('active')) {
+      target.removeClass("active"); // optimistic ui
+      cell.active = false;
+    } else {
+      cell.color = Session.get('color');
+      cell.active = true;
+      target.addClass("active "+cell.color); // optimistic ui
+    }
+    
+    debug("Updating cell "+cell.id);
+    Meteor.call('updateCell', room._id, cell);
   },
 });
 
@@ -102,6 +159,7 @@ Template.controls.events({
 });
 
 Meteor.startup( function() {
+  Session.set("playing", false);
   instrument = new Instrument();
 });
 
@@ -110,19 +168,7 @@ Meteor.setInterval(function () {
   Meteor.call('keepalive', { id: Meteor.userId(), name: Session.get('surname'), color: Session.get('color') });
 }, 5000);
 
-function cell(x, y, userId) {
-  return {
-    x: x || 0,
-    y: y || 0,
-    frequency: 200,
-    title: 200,
-    timestamp: new Date(),
-    userId: userId || '',
-    i: false,
-  }
-}
-
-let togglePlay = (function() {
+togglePlay = (function() {
   let handler = -1;
   return function() {
     if (handler === -1) {
@@ -132,6 +178,7 @@ let togglePlay = (function() {
       }, noteDuration());
     } else {
       Session.set("playing", false);
+      cursor = 0;
       clearInterval(handler);
       handler = -1;
     }
@@ -145,58 +192,53 @@ function play () {
     cursor = 0;
   }
 
-  $('td').removeClass('p p1 p2');
+  // $('td').removeClass('playing p1 p2');
   for(let y = 0; y < room.board.height; y++) {
     let cell = boardData[y][cursor];
-    if (cell.i) {
-      $(`td[data-x="${cursor}"][data-y="${y}"]`).toggleClass('p');
-      // cell.p = true;
-      // visualEffect(cell);
+    if (cell.active) {
+      let $cell = $(`td[data-id="{${cursor},${y}}"]`);
       instrument.playNote(cell.frequency);
+      visualEffect($cell, cursor, y);
     }
   }
 
   cursor++;
 }
 
-function noteDuration() {
+var visualEffect = function($cell, x, y) {
+	  
+    var around = $(`td[data-id="{${x-1},${y}}"], 
+      td[data-id="{${x+1},${y}}"], 
+      td[data-id="{${x},${y-1}}"], 
+      td[data-id="{${x},${y+1}}"]`);
+    
+    // Main cell effect
+    $cell.addClass('playing');
+    // around.addClass('around');
+    
+    setTimeout( function() {
+      $cell.removeClass('playing');
+      around.removeClass('around');
+    }, noteDuration() * 2);
+    
+	}
+
+var noteDuration = function() {
   return 60 / Rooms.findOne().tempo * 1000 / 4;
-}
+};
 
 var cursor = 0;
 
-// Calculate note from base and interval
-function calcNote(base,interval) {
-  return Math.round(base * Math.pow(2,interval/12)*100)/100;
-}
-
-// Get 'max' notes of 'scale' from 'base'
-function getScaleNotes(scale,base,max) {
-  interval = 0;
-  ni = 0;
-  notes = new Array();
-  ints = new Array();
-  for(n = 0; n < max; n++) {
-    note = calcNote(base,interval);
-    interval = interval + scale[ni];
-    ints[n] = scale[ni];
-    notes[n] = note;
-    ni++;
-    if (ni >= scale.length) ni = 0;
+var getCellSize = function(boardSize) {
+  var windowWidth = $(window).width();
+    boardWidth = windowWidth,
+    cellWidth = 0,
+    borderSpacing = 5;
+    
+  if (boardWidth > 500) {
+    boardWidth = 500;
+    borderspacing = 0;
   }
-  return notes;
-}
-
-// Each cell get its note
-function setNotes() {
-  var base = 260;
-  var board_height = Rooms.findOne().board.height;
-  var board_width = Rooms.findOne().board.width;
-  var notes = getScaleNotes(SCALE_VALUES.MAJOR, base, board_height);
-    for(x = 0; x < board_width; x++) {
-  for(y = 0; y < board_height; y++) {
-      boardData[x][y].frequency = notes[board_height-x-1];
-      boardData[x][y].title = notes[board_height-x-1];
-    }
-  }
+  
+  return Math.floor((boardWidth - (borderSpacing * (boardSize + 2))) / boardSize);
 }

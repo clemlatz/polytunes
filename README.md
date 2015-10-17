@@ -2,35 +2,46 @@
 
 ![Polytunes](https://pbs.twimg.com/media/CQ_poKHWwAAKpLq.png)
 
-Polytunes is a music pad built using Meteor and HTML5's WebAudio API under 24h during the [2015 Meteor Global Distributed Hackathon](http://meteor-2015.devpost.com/).
+Polytunes is a collaborative music game playable in the browser and on touch devices. The goal is to create melodies by collaborating without speaking to (or event knowing!) other players. If you don't feel like composing you can just watch and listen to others creating music in real-time.
 
-## Idea
+## Inspirations
 
-Polytunes is inspired by Yamaha's Tenori-on and Steve Reich's experiments on [Phasing](https://en.wikipedia.org/wiki/Phasing_(music)). The idea was to build a sequencer/synthetizer using only HTML5 (no Flash or sound files) and make it online and multiplayer using Meteor. Multiple players can join and update the melody on-the-go. All changes are instantly pushed to all other players.
+Polytunes inspirations are Yamaha's [Tenori-on](http://usa.yamaha.com/products/musical-instruments/entertainment/tenori-on/tnr-o/), André Michelle's [Tonematrix](http://tonematrix.audiotool.com/) and Steve Reich's experiments on [Phasing](https://en.wikipedia.org/wiki/Phasing_(music)).
 
-[Learn more on Polytune's Devpost page](http://devpost.com/software/polytunes)
+[Learn more about Polytunes' creation on our Devpost page](http://devpost.com/software/polytunes)
 
 ## Live demo
 
-https://polytunes.scalingo.io
+http://polytunes.es/
 
 ## Installation
 
-1. `git clone git@github.com:iwazaru/polytunes.git`
-2. `cd polytunes`
-3. `run meteor`
-4. Go to http://localhost:3000/
-5. Enjoy.
+1. Install [Meteor](https://www.meteor.com/) `curl https://install.meteor.com/ | sh`
+2. Clone this repo `git clone git@github.com:iwazaru/polytunes.git`
+3. Change directory `cd polytunes`
+4. Run the app `run meteor`
+5. Go to http://localhost:3000/
+6. Enjoy.
 
-## Team
+## Contributors
 
-Mostly Meteor first-timers, the Polytunes team is composed of:
-* [iwazaru](https://github.com/iwazaru)
-* [whollacsek](https://github.com/whollacsek)
-* [nbeydoon](https://github.com/nbeydoon)
-* [wmai](https://github.com/wmai)
+Polytunes' first version was built in 24 hours during the [2015 Meteor Global Distributed Hackathon] by [Clément Bourgoin](https://github.com/iwazaru), [William Hollacsek](https://github.com/whollacsek), [Nori Beydoon](https://github.com/nbeydoon) and [William Mai](https://github.com/wmai), mostly Meteor first-timers, and was awarded with the [People's Choice Award (3rd rank)](http://info.meteor.com/blog/meteor-global-distributed-hackathon-winners).
+
+Other contributors are [listed on Github](https://github.com/iwazaru/polytunes/graphs/contributors).
 
 ## Changelog
+
+0.5 (2015-10-17)
+* Click-and-hold to play a note, release mouse button to add it to the board, 
+or release outside of the board to cancel
+* Added shorcut: press spacebar to toggle playback
+* Playback cursor is reset when playback is paused
+* Revamped note handling to improve performances
+* Set volume to 0.1 to avoid sound saturation
+* Added loading message while loading app or room
+* Revamped design, added fonts and favicon
+* Improved cell animations when played
+* Added a link to Polytune's Facebook page
 
 0.4 (2015-10-13)
 * Added players name with colour under the board
