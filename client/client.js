@@ -4,12 +4,17 @@ function debug(msg) {
   }
 }
 
-Template.body.helpers({
-    isLogged: ()=> !Session.get('authorization') ? false : true
-})
+Template.home.helpers({
+  rooms: function() {
+    return Rooms.find();
+  }
+});
+
+Template.roomPlay.helpers({
+  isLogged: ()=> !Session.get('authorization') ? false : true
+});
 
 let boardData;
-
 Template.board.helpers({
   rows: function () {
     let room;
@@ -66,6 +71,7 @@ Template.login.helpers({
 
 Template.login.events({
   'submit #login-form': event => {
+    console.log("plop");
     event.preventDefault();
 
     const surname = event.target.surname.value;

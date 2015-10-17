@@ -2,7 +2,7 @@ if (Rooms.find().count() === 0) {
     Meteor.call('createRoom');
 }
 
-Meteor.publish(null, function() {
+Meteor.publish('rooms', function() {
     return Rooms.find();
 });
 

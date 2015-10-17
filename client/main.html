@@ -24,25 +24,6 @@
   <meta name="msapplication-square310x310logo" content="/icons/mstile-310x310.png" />
 </head>
 
-<body>
-  <div class="main">
-  	{{#if isLogged}}
-  		{{> board}}
-  		{{> controls}}
-  	{{else}}
-  		{{> login}}
-  	{{/if}}
-  	<div class="bottom">
-  		<h1 class="brand-title">polytunes 0.4</h1>
-      <div class="links">
-        <a href="https://www.facebook.com/playpolytunes" target="_blank"> <i class="fa fa-facebook-square"></i></a>
-        <a href="https://github.com/iwazaru/polytunes" target="_blank"> <i class="fa fa-github-square"></i></a>
-        <a href="http://devpost.com/software/polytunes" target="_blank"> <i class="fa fa-info-circle"></i></a>
-      </div>
-    </div>
-  </div>
-</body>
-
 <template name="board">
   <table id="board">
     <tbody>
