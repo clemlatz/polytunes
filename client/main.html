@@ -30,7 +30,7 @@
       {{#each rows}}
         <tr>
           {{#each .}}
-            <td class="{{#if active}}active {{color}}{{/if}}" data-id="{{id}}" style="width:{{size}}px;height:{{size}}px;"></td>
+            <td class="{{#if active}}active {{color}}{{/if}}" data-id="{{id}}" data-frequency="{{frequency}}" style="width:{{size}}px;height:{{size}}px;"></td>
           {{/each}}
         </tr>
       {{/each}}

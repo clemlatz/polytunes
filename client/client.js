@@ -89,7 +89,29 @@ Template.login.events({
 });
 
 Template.board.events({
-  'click td': function (event, template) {
+  
+  // Play note on mouse down if playback is off
+  'mousedown td': function(event, template) {
+    let target = $(event.target);
+    
+    // Play note if board is not currently playing
+    if (Session.get("playing") == false && !target.hasClass('active')) {
+      instrument.playNote(target.data('frequency'));
+    }
+  },
+  
+  // Play note on mouse down if playback is off & mouse button is pressed
+  'mouseover td': function(event, template) {
+    let target = $(event.target);
+    
+    // Play note if board is not currently playing
+    if (Session.get("playing") == false && !target.hasClass('active') && event.buttons == 1) {
+      instrument.playNote(target.data('frequency'));
+    }
+  },
+  
+  // Add note to the board when mouse button is released
+  'mouseup td': function (event, template) {
     let room = Rooms.findOne(),
       target = $(event.target),
       cell = { id: target.data('id') };
@@ -116,6 +138,7 @@ Template.controls.events({
 });
 
 Meteor.startup( function() {
+  Session.set("playing", false);
   instrument = new Instrument();
 });
 
