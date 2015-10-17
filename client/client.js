@@ -134,6 +134,7 @@ togglePlay = (function() {
       }, noteDuration());
     } else {
       Session.set("playing", false);
+      cursor = 0;
       clearInterval(handler);
       handler = -1;
     }
