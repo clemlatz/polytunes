@@ -1,15 +1,18 @@
 <template name="layout">
-  <div class="main">
-    
-    {{> yield}}
-    
-    <div class="bottom">
-      <h1 class="brand-title"><a href="{{pathFor 'home'}}">polytunes 0.4</a></h1>
-      <div class="links">
-        <a href="https://www.facebook.com/playpolytunes" target="_blank"> <i class="fa fa-facebook-square"></i></a>
-        <a href="https://github.com/iwazaru/polytunes" target="_blank"> <i class="fa fa-github-square"></i></a>
-        <a href="http://devpost.com/software/polytunes" target="_blank"> <i class="fa fa-info-circle"></i></a>
-      </div>
+  
+  <div class="top-bar">
+    <a href="{{pathFor 'home'}}">
+      <h1>polytunes 0.4</h1>
+    </a>
+    <div class="links">
+      <a href="https://www.facebook.com/playpolytunes" target="_blank"> <i class="fa fa-facebook-square"></i></a>
+      <a href="https://github.com/iwazaru/polytunes" target="_blank"> <i class="fa fa-github-square"></i></a>
+      <a href="http://devpost.com/software/polytunes" target="_blank"> <i class="fa fa-info-circle"></i></a>
     </div>
   </div>
+
+  <div class="main centered">
+    {{> yield}}
+  </div>
+  
 </template>

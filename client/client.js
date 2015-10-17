@@ -69,6 +69,13 @@ Template.login.helpers({
   }
 });
 
+Template.login.rendered = function() {
+  if(!this._rendered) {
+    this._rendered = true;
+    $('#username').focus();
+  }
+}
+
 Template.login.events({
   'submit #login-form': event => {
     console.log("plop");

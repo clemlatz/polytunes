@@ -1,18 +1,18 @@
   @font-face {
-    font-family: 'Roboto-Regular'; 
+    font-family: 'Roboto-Light'; 
     src: url("/fonts/Roboto-Light.ttf");
   }
   
   body {
     background:  black;
-    font-family: 'Roboto-Regular'; 
+    font-family: 'Roboto-Light'; 
     text-align: center;
     margin: 0;
     color: white;
   }
   
   * {
-    font-family: 'Roboto-Regular', monospace;
+    font-family: 'Roboto-Light', monospace;
   }
 
   .main {
@@ -31,7 +31,7 @@
   }
 
   .brand-title {
-    font-family: 'Roboto-Regular';
+    font-family: 'Roboto-Light';
     font-size: 1.2em;
     font-weight: normal;
     text-align center;
@@ -40,8 +40,8 @@
 
   h1 {
     font-size: 2em;
-    margin: 15px;
-    padding: 15px;
+    margin: 30px;
+    line-height 1.3em
   }
   
   .centered {
@@ -50,6 +50,10 @@
     top 50%
     transform translate(-50%, -50%)
     width: 100%;
+    
+    h1 {
+      margin-top 0
+    }
   }
 
   .controls {
@@ -194,12 +198,17 @@ p {
 input,
 button,
 .btn
-    background-color black
-    border 1px solid rgba(255, 255, 255, .5)
-    box-sizing border-box
-    color white
-    margin 10px
-    padding 5px 10px
+  background-color black
+  border 1px solid rgba(255, 255, 255, .5)
+  box-sizing border-box
+  display block
+  font-family 'Roboto-Light'
+  font-size 1em
+  color white
+  margin 10px auto
+  padding 5px 10px
+  width 100%
+  max-width 200px
 
 label {
   width: 150px;
