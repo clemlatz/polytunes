@@ -19,7 +19,7 @@ Meteor.publish(null, function() {
 // server code: heartbeat method
 Meteor.methods({
   keepalive: function (data) {
-    if (!data.name) return
+    if (!data.name) return;
     if (!Connections.findOne({user_id: data.id})) {
       console.log("User "+data.name+" enters");
 
@@ -36,4 +36,4 @@ Meteor.setInterval(function () {
     console.log("User "+user.user_id+" has disconnected");
     Connections.remove(user);
   });
-});
+}, 1000);
