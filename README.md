@@ -31,6 +31,9 @@ Other contributors are [listed on Github](https://github.com/iwazaru/polytunes/g
 
 ## Changelog
 
+0.5.1 (2015-10-19)
+* Fixed user timeout setInterval interval
+
 0.5 (2015-10-17)
 * Click-and-hold to play a note, release mouse button to add it to the board, 
 or release outside of the board to cancel
