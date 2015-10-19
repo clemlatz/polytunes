@@ -31,21 +31,19 @@ Meteor.methods({
   
 	updateCell: (roomId, cell)=> {
 		
-    let result = Rooms.update(
-  		{	_id: roomId,
-  			'partition.id': cell.id
-		  }, 
-      { $set: { 
-        'partition.$.active': cell.active,
-        'partition.$.color': cell.color
-      } }
-		);
-    if (result) {
-      console.log(`Updated cell [${cell.id}] : ${cell.active}`);
-    } else {
-      console.log(`An error occured while updating cell [${cell.id}] : ${cell.active}`);
-    }
-	},
+        let result = Rooms.update(
+      		{	_id: roomId,
+      			'partition.id': cell.id
+    		  }, 
+          { $set: { 
+            'partition.$.active': cell.active,
+            'partition.$.color': cell.color
+          } }
+    		);
+        if (!result) {
+          console.log(`An error occured while updating cell [${cell.id}] : ${cell.active}`);
+        }
+    },
   
 	addUser: (roomId, {surname, color})=> {
 		var userId = Meteor.userId();
