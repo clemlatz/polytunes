@@ -14,7 +14,7 @@ blaze-html-templates@1.0.1
 blaze-tools@1.0.4
 boilerplate-generator@1.0.4
 brettle:accounts-login-state@0.0.3
-brettle:accounts-patch-ui@0.1.3
+brettle:accounts-patch-ui@0.1.5
 caching-compiler@1.0.0
 caching-html-compiler@1.0.2
 callback-hook@1.0.4
@@ -52,6 +52,7 @@ iron:location@1.0.11
 iron:middleware-stack@1.0.11
 iron:router@1.0.12
 iron:url@1.0.11
+iwazaru:synth@0.1.0
 jquery@1.11.4
 launch-screen@1.0.4
 less@2.5.0_3
