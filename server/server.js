@@ -1,3 +1,8 @@
+Meteor.startup( function() {
+  AccountsGuest.name = true;
+  AccountsGuest.anonymous = true;
+});
+
 if (Rooms.find().count() === 0) {
     Meteor.call('createRoom');
 }

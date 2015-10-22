@@ -24,7 +24,7 @@ Template.board.helpers({
 
     if (!room)
       return false;
-    
+
     boardData = [], i = 0, cellSize = getCellSize(room.board.width);
     for (let y = 0; y < room.board.height ; y++) {
       let row = [];
@@ -36,9 +36,9 @@ Template.board.helpers({
       }
       boardData.push(row);
     }
-    
+
     debug("Updating board");
-    
+
     return boardData;
   }
 });
@@ -78,7 +78,6 @@ Template.login.rendered = function() {
 
 Template.login.events({
   'submit #login-form': event => {
-    console.log("plop");
     event.preventDefault();
 
     const surname = event.target.surname.value;
@@ -105,32 +104,32 @@ Template.body.events({
 });
 
 Template.board.events({
-  
+
   // Play note on mouse down if playback is off
   'mousedown td': function(event, template) {
     let target = $(event.target);
-    
+
     // Play note if board is not currently playing
     if (Session.get("playing") == false && !target.hasClass('active')) {
       instrument.startPlayingNote(target.data('frequency'));
     }
   },
-  
+
   // Play note on mouse down if playback is off & mouse button is pressed
   'mouseover td': function(event, template) {
     let target = $(event.target);
-    
+
     // Play note if board is not currently playing
     if (Session.get("playing") == false && !target.hasClass('active') && event.buttons == 1) {
       instrument.startPlayingNote(target.data('frequency'));
     }
   },
-  
+
   // Stop playing note if mouse button is released
   'mouseup': function() {
     instrument.stopPlayingNote();
   },
-  
+
   // Add note to the board when mouse button is released
   'mouseup td': function (event, template) {
     let room = Rooms.findOne(),
@@ -145,7 +144,7 @@ Template.board.events({
       cell.active = true;
       target.addClass("active "+cell.color); // optimistic ui
     }
-    
+
     debug("Updating cell "+cell.id);
     Meteor.call('updateCell', room._id, cell);
   },
@@ -206,21 +205,21 @@ function play () {
 }
 
 var visualEffect = function($cell, x, y) {
-	  
-    var around = $(`td[data-id="{${x-1},${y}}"], 
-      td[data-id="{${x+1},${y}}"], 
-      td[data-id="{${x},${y-1}}"], 
+
+    var around = $(`td[data-id="{${x-1},${y}}"],
+      td[data-id="{${x+1},${y}}"],
+      td[data-id="{${x},${y-1}}"],
       td[data-id="{${x},${y+1}}"]`);
-    
+
     // Main cell effect
     $cell.addClass('playing');
     // around.addClass('around');
-    
+
     setTimeout( function() {
       $cell.removeClass('playing');
       around.removeClass('around');
     }, noteDuration() * 2);
-    
+
 	}
 
 var noteDuration = function() {
@@ -234,11 +233,11 @@ var getCellSize = function(boardSize) {
     boardWidth = windowWidth,
     cellWidth = 0,
     borderSpacing = 5;
-    
+
   if (boardWidth > 500) {
     boardWidth = 500;
     borderspacing = 0;
   }
-  
+
   return Math.floor((boardWidth - (borderSpacing * (boardSize + 2))) / boardSize);
 }
