@@ -11,7 +11,9 @@ Template.home.helpers({
 });
 
 Template.roomPlay.helpers({
-  isLogged: ()=> !Session.get('authorization') ? false : true
+  isLogged: function () {
+    return !! Meteor.user().profile.name
+  }
 });
 
 let boardData;
@@ -43,11 +45,13 @@ Template.board.helpers({
   }
 });
 
+Meteor.subscribe('players');
+
 Template.controls.helpers({
   playerList: function() {
     var list = [];
-    Connections.find().forEach( function(player) {
-      list.push('<span class="player '+player.color+'">'+player.name+'</span>');
+    Meteor.users.find({ 'profile.online': true }).forEach( function(user) {
+      list.push('<span class="player '+user.profile.color+'">'+user.profile.name+'</span>');
     })
     return list.join(' ');
   },
@@ -69,6 +73,7 @@ Template.login.helpers({
   }
 });
 
+// Focus on login field when template is rendered
 Template.login.rendered = function() {
   if(!this._rendered) {
     this._rendered = true;
@@ -80,16 +85,12 @@ Template.login.events({
   'submit #login-form': event => {
     event.preventDefault();
 
-    const surname = event.target.surname.value;
-    const color = event.target.color.value;
-    const roomId = Rooms.findOne()._id;
+    const name = event.target.name.value,
+      color = event.target.color.value,
+      roomId = Rooms.findOne()._id;
 
-    Meteor.call('addUser', roomId, { surname, color});
-    Session.setPersistent('authorization', "true");
-    Session.setPersistent('surname', surname);
-    Session.setPersistent('color', color);
+    Meteor.call('guestLogin', roomId, { name, color});
 
-    Meteor.call('keepalive', { id: Meteor.userId(), name: surname, color: color });
     return false;
   }
 });
@@ -140,7 +141,7 @@ Template.board.events({
       target.removeClass("active"); // optimistic ui
       cell.active = false;
     } else {
-      cell.color = Session.get('color');
+      cell.color = Meteor.user().profile.color;
       cell.active = true;
       target.addClass("active "+cell.color); // optimistic ui
     }
@@ -160,12 +161,8 @@ Template.controls.events({
 Meteor.startup( function() {
   Session.set("playing", false);
   instrument = new Instrument();
+  Meteor.call('userPings');
 });
-
-// client code: ping heartbeat every 5 seconds
-Meteor.setInterval(function () {
-  Meteor.call('keepalive', { id: Meteor.userId(), name: Session.get('surname'), color: Session.get('color') });
-}, 5000);
 
 togglePlay = (function() {
   let handler = -1;

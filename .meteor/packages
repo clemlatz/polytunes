@@ -18,7 +18,6 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 stylus                    # Stylus support
 artwells:accounts-guest   # Automatically add visitor as anonymous guest with userId
-u2622:persistent-session  # Set persistent session data
 fortawesome:fontawesome   # Add font-awesome icons
 meyerweb-reset            # CSS Reset
 iron:router               # Router
@@ -36,3 +35,4 @@ iwazaru:synth             # WebAudio API library
 #grove:call-async
 #mizzao:timesync
 #lookback:tooltips
+#u2622:persistent-session

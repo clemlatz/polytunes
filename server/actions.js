@@ -16,7 +16,7 @@ Meteor.methods({
         tempo: 120,
         createdAt: new Date()
     };
-    
+
     let music = new Music();
     let notes = music.getScaleNotes(room.synthetizer.scale, room.synthetizer.base, room.board.height);
     for (let y = 0; y < room.board.height; y++) {
@@ -25,17 +25,17 @@ Meteor.methods({
         room.partition.push(new Cell(x,y,frequency));
       }
     }
-    
+
     Rooms.insert(room);
 	},
-  
-	updateCell: (roomId, cell)=> {
-		
+
+	updateCell: (roomId, cell) => {
+
         let result = Rooms.update(
       		{	_id: roomId,
       			'partition.id': cell.id
-    		  }, 
-          { $set: { 
+    		  },
+          { $set: {
             'partition.$.active': cell.active,
             'partition.$.color': cell.color
           } }
@@ -44,21 +44,20 @@ Meteor.methods({
           console.log(`An error occured while updating cell [${cell.id}] : ${cell.active}`);
         }
     },
-  
-	addUser: (roomId, {surname, color})=> {
-		var userId = Meteor.userId();
 
-		Rooms.update(roomId, {
-			$push: {
-				players: {
-					surname,
-					userId,
-					color
-				}
-			}
-		});
+	guestLogin: (roomId, { name, color }) => {
+		var userId = Meteor.userId();
+    Meteor.users.update(userId, {
+      $set: {
+        'profile.name': name,
+        'profile.color': color,
+        'profile.online': true,
+        lastSeenAt: (new Date()).getTime(),
+      }
+    });
+    console.log(`User ${name} logged in.`);
 	},
-	deleteUser: (roomId)=> {
+	deleteUser: (roomId) => {
 		var userId = Meteor.userId();
 
 		Rooms.remove(roomId, {
