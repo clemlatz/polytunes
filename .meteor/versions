@@ -62,6 +62,7 @@ mongo-id@1.0.1
 mousetrap:mousetrap@1.4.6_1
 npm-mongo@1.4.39_1
 observe-sequence@1.0.7
+okgrow:analytics@0.4.3
 ordered-dict@1.0.4
 promise@0.5.0
 random@1.0.4
