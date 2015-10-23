@@ -25,6 +25,7 @@ flowkey:hotkeys           # Keyboard shortcuts
 gwendall:body-events      # Allow to set events on body
 iwazaru:synth             # WebAudio API library
 okgrow:analytics          # Analytics
+tap:i18n                  # Internationalization
 
 # (Yet?) unused packages
 #accounts-ui
