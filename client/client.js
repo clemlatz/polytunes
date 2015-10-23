@@ -44,7 +44,7 @@ Template.board.helpers({
 
 Template.controls.helpers({
   players: function() {
-    Meteor.subscribe('players');
+    Meteor.subscribe('players', this._id);
     return Meteor.users.find();
   },
   playButtonIcon: function() {

@@ -18,6 +18,6 @@ Rooms.allow({
 });
 
 // Publish online user list
-Meteor.publish('players', function() {
-  return Meteor.users.find({ 'profile.online': true, 'profile.name': { $exists: true } }, { fields: { 'profile': 1 } });
+Meteor.publish('players', function(currentRoom) {
+  return Meteor.users.find({ 'profile.currentRoom': currentRoom, 'profile.online': true, 'profile.name': { $exists: true } }, { fields: { 'profile': 1 } });
 });

@@ -66,5 +66,15 @@ Meteor.methods({
       }
     });
     console.log(`User ${user.profile.name} joined room ${roomId}.`);
+  },
+
+  userLeavesRoom: function(roomId) {
+    let user = Meteor.user();
+    Meteor.users.update(user, {
+      $unset: {
+        'profile.currentRoom': ""
+      }
+    });
+    console.log(`User ${user.profile.name} left room ${roomId}.`);
   }
 });
