@@ -6,7 +6,15 @@ function debug(msg) {
 
 Template.home.helpers({
   rooms: function() {
-    return Rooms.find();
+    return Rooms.find({ isPublic: true });
+  }
+});
+
+Template.home.events({
+  "click #createPrivateRoom": function() {
+    Meteor.call('createRoom', { isPublic: false }, function(error, roomId) {
+      Router.go('roomPlay', { '_id': roomId })
+    });
   }
 });
 
@@ -19,7 +27,7 @@ Template.roomPlay.helpers({
 let boardData;
 Template.board.helpers({
   rows: function () {
-    let room = this
+    let room = this.room;
 
     if (!room)
       return false;
@@ -78,10 +86,9 @@ Template.login.events({
     event.preventDefault();
 
     const name = event.target.name.value,
-      color = event.target.color.value,
-      roomId = Rooms.findOne()._id;
+      color = event.target.color.value;
 
-    Meteor.call('guestLogin', roomId, { name, color});
+    Meteor.call('guestLogin', name, color);
 
     return false;
   }
@@ -125,8 +132,7 @@ Template.board.events({
 
   // Add note to the board when mouse button is released
   'mouseup td': function (event, template) {
-    let room = Rooms.findOne(),
-      target = $(event.target),
+    let target = $(event.target),
       cell = { id: target.data('id') };
 
     if (target.hasClass('active')) {
@@ -139,13 +145,13 @@ Template.board.events({
     }
 
     debug("Updating cell "+cell.id);
-    Meteor.call('updateCell', room._id, cell);
+    Meteor.call('updateCell', cell);
   },
 });
 
 Template.controls.events({
   'click #play': function (event, template) {
-    togglePlay();
+    togglePlay(this.room);
     instrument.playNote(1); // Hack to fix sound in Safari iOS
   }
 });
@@ -173,14 +179,14 @@ togglePlay = (function() {
   }
 })();
 
-function play () {
-  let room = Rooms.findOne();
+function play() {
+
+  let room = Session.get('currentRoom');
 
   if (cursor >= room.board.width) {
     cursor = 0;
   }
 
-  // $('td').removeClass('playing p1 p2');
   for(let y = 0; y < room.board.height; y++) {
     let cell = boardData[y][cursor];
     if (cell.active) {
@@ -212,7 +218,7 @@ var visualEffect = function($cell, x, y) {
 	}
 
 var noteDuration = function() {
-  return 60 / Rooms.findOne().tempo * 1000 / 4;
+  return 60 / Session.get('currentRoom').tempo * 1000 / 4;
 };
 
 var cursor = 0;

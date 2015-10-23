@@ -1,6 +1,6 @@
 Meteor.methods({
 	createRoom: (room) => {
-		room = room || {
+		room = _.extend({
         isPublic: true,
         board: {
             width: 16,
@@ -15,7 +15,7 @@ Meteor.methods({
         },
         tempo: 120,
         createdAt: new Date()
-    };
+    }, room);
 
     let music = new Music();
     let notes = music.getScaleNotes(room.synthetizer.scale, room.synthetizer.base, room.board.height);
@@ -26,13 +26,13 @@ Meteor.methods({
       }
     }
 
-    Rooms.insert(room);
+    return Rooms.insert(room);
 	},
 
-	updateCell: (roomId, cell) => {
+	updateCell: (cell) => {
 
         let result = Rooms.update(
-      		{	_id: roomId,
+      		{	_id: Meteor.user().profile.currentRoom,
       			'partition.id': cell.id
     		  },
           { $set: {
@@ -45,7 +45,7 @@ Meteor.methods({
         }
     },
 
-	guestLogin: function(roomId, { name, color }) {
+	guestLogin: function(name, color) {
 		var userId = Meteor.userId();
     Meteor.users.update(userId, {
       $set: {
