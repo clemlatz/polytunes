@@ -19,5 +19,5 @@ Rooms.allow({
 
 // Publish online user list
 Meteor.publish('players', function() {
-  return Meteor.users.find({ 'profile.online': true, 'profile.name': { $exists: true } })
+  return Meteor.users.find({ 'profile.online': true, 'profile.name': { $exists: true } }, { fields: { 'profile': 1 } });
 });

@@ -19,10 +19,7 @@ Template.roomPlay.helpers({
 let boardData;
 Template.board.helpers({
   rows: function () {
-    let room;
-    if (location.pathname.split('/')[1] === 'rooms')
-      room = Rooms.findOne({_id: location.pathname.split('/')[location.pathname.split('/').length - 1]});
-    else room = Rooms.findOne();
+    let room = this
 
     if (!room)
       return false;
@@ -45,15 +42,10 @@ Template.board.helpers({
   }
 });
 
-Meteor.subscribe('players');
-
 Template.controls.helpers({
-  playerList: function() {
-    var list = [];
-    Meteor.users.find({ 'profile.online': true }).forEach( function(user) {
-      list.push('<span class="player '+user.profile.color+'">'+user.profile.name+'</span>');
-    })
-    return list.join(' ');
+  players: function() {
+    Meteor.subscribe('players');
+    return Meteor.users.find();
   },
   playButtonIcon: function() {
     return (Session.get('playing') === true ? 'pause' : 'play');

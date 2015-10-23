@@ -40,7 +40,9 @@
 
 <template name="controls">
   <div class="player-list">
-    {{{ playerList }}}
+    {{#each players}}
+      <span class="player {{ profile.color }}">{{ profile.name }}</span>
+    {{/each}}
   </div>
   <div class="controls">
     <button id="play" class="e"><i class="fa fa-{{ playButtonIcon }}"></i></button>

@@ -45,7 +45,7 @@ Meteor.methods({
         }
     },
 
-	guestLogin: (roomId, { name, color }) => {
+	guestLogin: function(roomId, { name, color }) {
 		var userId = Meteor.userId();
     Meteor.users.update(userId, {
       $set: {
@@ -57,16 +57,14 @@ Meteor.methods({
     });
     console.log(`User ${name} logged in.`);
 	},
-	deleteUser: (roomId) => {
-		var userId = Meteor.userId();
 
-		Rooms.remove(roomId, {
-			$pull: {
-				players: { userId }
-			}
-		});
-	},
-	ping: ()=> {
-		return new Date();
-	}
+  userJoinsRoom: function(roomId) {
+    let user = Meteor.user();
+    Meteor.users.update(user, {
+      $set: {
+        'profile.currentRoom': roomId
+      }
+    });
+    console.log(`User ${user.profile.name} joined room ${roomId}.`);
+  }
 });
