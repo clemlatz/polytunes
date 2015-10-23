@@ -160,6 +160,9 @@ Meteor.startup( function() {
   Session.set("playing", false);
   instrument = new Instrument();
   Meteor.call('userPings');
+
+  // Set language
+  TAPi18n.setLanguage(navigator.language || navigator.userLanguage);
 });
 
 togglePlay = (function() {

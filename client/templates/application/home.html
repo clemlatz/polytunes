@@ -1,7 +1,7 @@
 <template name="home">
-  <h1>welcome to polytunes</h1>
+  <h1>{{_ "welcome-to-polytunes"}}</h1>
   {{#each rooms}}
-    <a class="btn" href="{{pathFor 'roomPlay'}}">join a public room</a>
+    <a class="btn" href="{{pathFor 'roomPlay'}}">{{_ "join-a-public-room"}}</a>
   {{/each}}
-  <a class="btn" id="createPrivateRoom">create a private room</a>
+  <a class="btn" id="createPrivateRoom">{{_ "create-a-public-room"}}</a>
 </template>
