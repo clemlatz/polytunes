@@ -46,8 +46,8 @@ Meteor.methods({
     },
 
 	guestLogin: function(name, color) {
-		var userId = Meteor.userId();
-    Meteor.users.update(userId, {
+		let user = Meteor.user();
+    Meteor.users.update(user, {
       $set: {
         'profile.name': name,
         'profile.color': color,
@@ -55,6 +55,7 @@ Meteor.methods({
         lastSeenAt: (new Date()).getTime(),
       }
     });
+    Meteor.call('userJoinsRoom', user.profile.currentRoom);
     console.log(`User ${name} logged in.`);
 	},
 
@@ -65,14 +66,34 @@ Meteor.methods({
         'profile.currentRoom': roomId
       }
     });
+
+    // Remove player before inserting
+    Rooms.update(roomId, { $pull: { players: { userId: user._id }, multi: true } });
+    Rooms.update(roomId, {
+      $push: {
+        players: {
+          userId: user._id,
+          name: user.profile.name
+        }
+      }
+    });
     console.log(`User ${user.profile.name} joined room ${roomId}.`);
   },
 
   userLeavesRoom: function(roomId) {
     let user = Meteor.user();
+    if (!user) {
+      return false;
+    }
     Meteor.users.update(user, {
       $unset: {
         'profile.currentRoom': ""
+      }
+    });
+    Rooms.update(roomId, {
+      $pull: {
+        players: { userId: user._id },
+        multi: true
       }
     });
     console.log(`User ${user.profile.name} left room ${roomId}.`);

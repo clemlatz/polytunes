@@ -52,8 +52,7 @@ Template.board.helpers({
 
 Template.controls.helpers({
   players: function() {
-    Meteor.subscribe('players', this._id);
-    return Meteor.users.find();
+    return this.room.players;
   },
   playButtonIcon: function() {
     return (Session.get('playing') === true ? 'pause' : 'play');

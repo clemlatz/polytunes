@@ -23,28 +23,3 @@
   <meta name="msapplication-wide310x150logo" content="/icons/mstile-310x150.png" />
   <meta name="msapplication-square310x310logo" content="/icons/mstile-310x310.png" />
 </head>
-
-<template name="board">
-  <table id="board">
-    <tbody>
-      {{#each rows}}
-        <tr>
-          {{#each .}}
-            <td class="{{#if active}}active {{color}}{{/if}}" data-id="{{id}}" data-frequency="{{frequency}}" style="width:{{size}}px;height:{{size}}px;"></td>
-          {{/each}}
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
-</template>
-
-<template name="controls">
-  <div class="player-list">
-    {{#each players}}
-      <span class="player {{ profile.color }}">{{ profile.name }}</span>
-    {{/each}}
-  </div>
-  <div class="controls">
-    <button id="play" class="e"><i class="fa fa-{{ playButtonIcon }}"></i></button>
-  </div>
-</template>
