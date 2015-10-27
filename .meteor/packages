@@ -26,6 +26,7 @@ gwendall:body-events      # Allow to set events on body
 iwazaru:synth             # WebAudio API library
 okgrow:analytics          # Analytics
 tap:i18n                  # Internationalization
+chrismbeckett:toastr      # Notifications
 
 # (Yet?) unused packages
 #accounts-ui
