@@ -24,6 +24,30 @@ Template.roomPlay.helpers({
   }
 });
 
+Template.roomPlay.onCreated(function() {
+  let room = this.data.room;
+
+  if (room.players.length >= 2) {
+    Router.go("roomWatch", { _id: room._id });
+  }
+
+  Session.set("currentRoom", room);
+  Meteor.call("userJoinsRoom", room._id);
+});
+
+Template.roomPlay.onDestroyed(function() {
+  let room = this.data.room;
+  Meteor.call("userLeavesRoom", room._id);
+  if (Session.get("playing")) {
+    togglePlay();
+  }
+});
+
+Template.roomWatch.onCreated(function() {
+  let room = this.data.room;
+  Session.set("currentRoom", room);
+});
+
 let boardData;
 Template.board.helpers({
   rows: function () {
