@@ -102,7 +102,7 @@ Template.body.events({
   }
 });
 
-Template.board.events({
+Template.roomPlay.events({
 
   // Play note on mouse down if playback is off
   'mousedown td': function(event, template) {
@@ -146,6 +146,12 @@ Template.board.events({
     debug("Updating cell "+cell.id);
     Meteor.call('updateCell', cell);
   },
+});
+
+Template.roomWatch.events({
+  'click #board': function() {
+    alert("You cannot add notes to the board in watch mode.");
+  }
 });
 
 Template.controls.events({
