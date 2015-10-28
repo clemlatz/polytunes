@@ -4,6 +4,8 @@
 
 Polytunes is a collaborative music game playable in the browser and on touch devices. The goal is to create melodies by collaborating without speaking to (or event knowing!) other players. If you don't feel like composing you can just watch and listen to others creating music in real-time.
 
+Follow Polytunes on [Facebook](https://www.facebook.com/playpolytunes) and [Devpost](http://devpost.com/software/polytunes)
+
 ## Inspirations
 
 Polytunes inspirations are Yamaha's [Tenori-on](http://usa.yamaha.com/products/musical-instruments/entertainment/tenori-on/tnr-o/), André Michelle's [Tonematrix](http://tonematrix.audiotool.com/) and Steve Reich's experiments on [Phasing](https://en.wikipedia.org/wiki/Phasing_(music)).
@@ -12,7 +14,7 @@ Polytunes inspirations are Yamaha's [Tenori-on](http://usa.yamaha.com/products/m
 
 ## Live demo
 
-http://polytunes.es/
+http://polytun.es/
 
 ## Installation
 
@@ -31,11 +33,22 @@ Other contributors are [listed on Github](https://github.com/iwazaru/polytunes/g
 
 ## Changelog
 
+0.6 (2015-10-29)
+* Polytunes is now a two-player game: invite a friend or play with a complete
+random stranger
+* Multiple rooms can be created: public room that can be joined by anyone and
+private rooms that only users knowing the url can join
+* The board is divided in two sides, each player can only play on its side
+* Only two player can play in the same room, but if more players join the room,
+they can watch
+* If a player is alone in a room, a waiting message will be displayed
+* Added internationalization and french translations
+
 0.5.1 (2015-10-19)
 * Fixed user timeout setInterval interval
 
 0.5 (2015-10-17)
-* Click-and-hold to play a note, release mouse button to add it to the board, 
+* Click-and-hold to play a note, release mouse button to add it to the board,
 or release outside of the board to cancel
 * Added shorcut: press spacebar to toggle playback
 * Playback cursor is reset when playback is paused

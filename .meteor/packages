@@ -16,20 +16,26 @@ standard-minifiers      # JS/CSS minifiers run for production mode
 es5-shim                # ECMAScript 5 compatibility for older browsers.
 ecmascript              # Enable ECMAScript2015+ syntax in app code
 
-grigio:babel
-stylus
-artwells:accounts-guest
-accounts-ui
-accounts-password
-check
-random
-mvrx:bluebird
-grove:call-async
-mizzao:timesync
-u2622:persistent-session
-lookback:tooltips
-fortawesome:fontawesome
-meyerweb-reset
-iron:router
-flowkey:hotkeys
-gwendall:body-events
+stylus                    # Stylus support
+artwells:accounts-guest   # Automatically add visitor as anonymous guest with userId
+fortawesome:fontawesome   # Add font-awesome icons
+meyerweb-reset            # CSS Reset
+iron:router               # Router
+flowkey:hotkeys           # Keyboard shortcuts
+gwendall:body-events      # Allow to set events on body
+iwazaru:synth             # WebAudio API library
+okgrow:analytics          # Analytics
+tap:i18n                  # Internationalization
+chrismbeckett:toastr      # Notifications
+
+# (Yet?) unused packages
+#accounts-ui
+#accounts-password
+#grigio:babel
+#check
+#random
+#mvrx:bluebird
+#grove:call-async
+#mizzao:timesync
+#lookback:tooltips
+#u2622:persistent-session

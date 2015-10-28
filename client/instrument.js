@@ -1,5 +1,5 @@
 Instrument = class Instrument {
-    
+
   getWad() {
     var settings = {
       volume: .1,
@@ -7,14 +7,14 @@ Instrument = class Instrument {
     };
     return new Wad(settings);
   }
-  
+
   getNoteDuration() {
     if (this.duration) {
       return this.duration;
     } else {
-      let room = Rooms.findOne();
+      let room = Session.get('currentRoom');
       if (room) {
-        this.duration = 60 / Rooms.findOne().tempo * 1000 / 4;
+        this.duration = 60 / room.tempo * 1000 / 4;
         return this.duration;
       }
     }
@@ -36,12 +36,19 @@ Instrument = class Instrument {
       }
     });
   }
-  
+
   startPlayingNote(frequency) {
+    var duration = this.getNoteDuration();
     this.stopPlayingNote();
-    this.currentWad = this.getWad().play({ pitch: frequency });
+    this.currentWad = this.getWad().play({
+      pitch: frequency,
+      env: {
+        decay: duration / 1000 * .1,
+        release: duration / 1000 * .75
+      }
+    });
   }
-  
+
   stopPlayingNote() {
     if (typeof this.currentWad === "undefined") {
       return;
@@ -49,5 +56,5 @@ Instrument = class Instrument {
     this.currentWad.stop();
     this.currentWad = undefined;
   }
-  
+
 }

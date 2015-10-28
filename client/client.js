@@ -4,27 +4,103 @@ function debug(msg) {
   }
 }
 
-Template.home.helpers({
-  rooms: function() {
-    return Rooms.find();
+Meteor.startup( function() {
+  Session.set("playing", false);
+  instrument = new Instrument();
+  Meteor.call('userPings');
+
+  // Set language
+  TAPi18n.setLanguage(navigator.language || navigator.userLanguage);
+
+  // Notification options
+  toastr.options = {
+    positionClass: "toast-bottom-left",
+    preventDuplicates: true
   }
 });
 
+Template.home.helpers({
+  rooms: function() {
+    return Rooms.find({ isPublic: true });
+  }
+});
+
+Template.create.onCreated(function() {
+  Meteor.call('createRoom', { isPublic: false }, function(error, roomId) {
+    Router.go('roomPlay', { '_id': roomId });
+  });
+});
+
+Template.join.onCreated(function() {
+
+  // Join a public room with one other player (no more, no less)
+  let room = Rooms.findOne({ isPublic: true, 'players.0': { $exists: true }, 'players.1': { $exists: false } });
+  if (room) {
+    Router.go("roomPlay", { _id: room._id });
+    return;
+  }
+
+  // Else join an empty public room
+  room = Rooms.findOne({ isPublic: true, 'players.0': { $exists: false } });
+  if (room) {
+    Router.go("roomPlay", { _id: room._id });
+    return;
+  }
+
+  // Else create a new public room
+  Meteor.call("createRoom", { isPublic: true }, function(error, roomId) {
+    Router.go("roomPlay", { _id: roomId });
+  });
+});
+
 Template.roomPlay.helpers({
-  isLogged: ()=> !Session.get('authorization') ? false : true
+  notLogged: function () {
+    return ! Meteor.user().profile.name
+  },
+  notEnoughPlayers: function() {
+    return (this.room.players.length < 2);
+  }
+});
+
+Template.waitingForPlayers.helpers({
+  isPublic: function() {
+    return this.room.isPublic;
+  }
+});
+
+Template.roomPlay.onCreated(function() {
+  let room = this.data.room;
+
+  if (room.players.length >= 2) {
+    toastr.info(TAPi18n.__('room-full-watch-mode'));
+    Router.go("roomWatch", { _id: room._id });
+  }
+
+  Session.set("currentRoom", room);
+  Meteor.call("userJoinsRoom", room._id);
+});
+
+Template.roomPlay.onDestroyed(function() {
+  let room = this.data.room;
+  Meteor.call("userLeavesRoom", room._id);
+  if (Session.get("playing")) {
+    togglePlay();
+  }
+});
+
+Template.roomWatch.onCreated(function() {
+  let room = this.data.room;
+  Session.set("currentRoom", room);
 });
 
 let boardData;
 Template.board.helpers({
   rows: function () {
-    let room;
-    if (location.pathname.split('/')[1] === 'rooms')
-      room = Rooms.findOne({_id: location.pathname.split('/')[location.pathname.split('/').length - 1]});
-    else room = Rooms.findOne();
+    let room = this.room;
 
     if (!room)
       return false;
-    
+
     boardData = [], i = 0, cellSize = getCellSize(room.board.width);
     for (let y = 0; y < room.board.height ; y++) {
       let row = [];
@@ -36,20 +112,16 @@ Template.board.helpers({
       }
       boardData.push(row);
     }
-    
+
     debug("Updating board");
-    
+
     return boardData;
   }
 });
 
 Template.controls.helpers({
-  playerList: function() {
-    var list = [];
-    Connections.find().forEach( function(player) {
-      list.push('<span class="player '+player.color+'">'+player.name+'</span>');
-    })
-    return list.join(' ');
+  players: function() {
+    return this.room.players;
   },
   playButtonIcon: function() {
     return (Session.get('playing') === true ? 'pause' : 'play');
@@ -69,6 +141,7 @@ Template.login.helpers({
   }
 });
 
+// Focus on login field when template is rendered
 Template.login.rendered = function() {
   if(!this._rendered) {
     this._rendered = true;
@@ -78,19 +151,13 @@ Template.login.rendered = function() {
 
 Template.login.events({
   'submit #login-form': event => {
-    console.log("plop");
     event.preventDefault();
 
-    const surname = event.target.surname.value;
-    const color = event.target.color.value;
-    const roomId = Rooms.findOne()._id;
+    const name = event.target.name.value,
+      color = event.target.color.value;
 
-    Meteor.call('addUser', roomId, { surname, color});
-    Session.setPersistent('authorization', "true");
-    Session.setPersistent('surname', surname);
-    Session.setPersistent('color', color);
+    Meteor.call('guestLogin', name, color);
 
-    Meteor.call('keepalive', { id: Meteor.userId(), name: surname, color: color });
     return false;
   }
 });
@@ -104,69 +171,69 @@ Template.body.events({
   }
 });
 
-Template.board.events({
-  
+Template.roomPlay.events({
+
   // Play note on mouse down if playback is off
   'mousedown td': function(event, template) {
     let target = $(event.target);
-    
+
     // Play note if board is not currently playing
     if (Session.get("playing") == false && !target.hasClass('active')) {
       instrument.startPlayingNote(target.data('frequency'));
     }
   },
-  
+
   // Play note on mouse down if playback is off & mouse button is pressed
   'mouseover td': function(event, template) {
     let target = $(event.target);
-    
+
     // Play note if board is not currently playing
     if (Session.get("playing") == false && !target.hasClass('active') && event.buttons == 1) {
       instrument.startPlayingNote(target.data('frequency'));
     }
   },
-  
+
   // Stop playing note if mouse button is released
   'mouseup': function() {
     instrument.stopPlayingNote();
   },
-  
+
   // Add note to the board when mouse button is released
   'mouseup td': function (event, template) {
-    let room = Rooms.findOne(),
-      target = $(event.target),
+    let target = $(event.target),
+      slot = $('player_'+Meteor.userId()).data('slot'),
       cell = { id: target.data('id') };
 
     if (target.hasClass('active')) {
-      target.removeClass("active"); // optimistic ui
+      // target.removeClass("active"); // optimistic ui
       cell.active = false;
     } else {
-      cell.color = Session.get('color');
+      cell.slot = $('.user_'+Meteor.userId()).data('slot');
       cell.active = true;
-      target.addClass("active "+cell.color); // optimistic ui
+      // target.addClass("active player_"+cell.slot); // optimistic ui
     }
-    
+
     debug("Updating cell "+cell.id);
-    Meteor.call('updateCell', room._id, cell);
+    Meteor.call('updateCell', cell, function(error, result) {
+      if (error) {
+        toastr.error(TAPi18n.__(error.reason));
+      }
+    });
   },
+});
+
+Template.roomWatch.events({
+  'click #board': function() {
+    toastr.warning(TAPi18n.__("cannot-add-notes-watch-mode"));
+  }
 });
 
 Template.controls.events({
   'click #play': function (event, template) {
-    togglePlay();
+    togglePlay(this.room);
     instrument.playNote(1); // Hack to fix sound in Safari iOS
   }
 });
-
-Meteor.startup( function() {
-  Session.set("playing", false);
-  instrument = new Instrument();
-});
-
-// client code: ping heartbeat every 5 seconds
-Meteor.setInterval(function () {
-  Meteor.call('keepalive', { id: Meteor.userId(), name: Session.get('surname'), color: Session.get('color') });
-}, 5000);
 
 togglePlay = (function() {
   let handler = -1;
@@ -185,18 +252,18 @@ togglePlay = (function() {
   }
 })();
 
-function play () {
-  let room = Rooms.findOne();
+function play() {
+
+  let room = Session.get('currentRoom');
 
   if (cursor >= room.board.width) {
     cursor = 0;
   }
 
-  // $('td').removeClass('playing p1 p2');
   for(let y = 0; y < room.board.height; y++) {
     let cell = boardData[y][cursor];
     if (cell.active) {
-      let $cell = $(`td[data-id="{${cursor},${y}}"]`);
+      let $cell = $(`td[data-id="{${cursor};${y}}"]`);
       instrument.playNote(cell.frequency);
       visualEffect($cell, cursor, y);
     }
@@ -206,25 +273,25 @@ function play () {
 }
 
 var visualEffect = function($cell, x, y) {
-	  
-    var around = $(`td[data-id="{${x-1},${y}}"], 
-      td[data-id="{${x+1},${y}}"], 
-      td[data-id="{${x},${y-1}}"], 
-      td[data-id="{${x},${y+1}}"]`);
-    
+
+    var around = $(`td[data-id="{${x-1};${y}}"],
+      td[data-id="{${x+1};${y}}"],
+      td[data-id="{${x};${y-1}}"],
+      td[data-id="{${x};${y+1}}"]`);
+
     // Main cell effect
     $cell.addClass('playing');
     // around.addClass('around');
-    
+
     setTimeout( function() {
       $cell.removeClass('playing');
       around.removeClass('around');
     }, noteDuration() * 2);
-    
+
 	}
 
 var noteDuration = function() {
-  return 60 / Rooms.findOne().tempo * 1000 / 4;
+  return 60 / Session.get('currentRoom').tempo * 1000 / 4;
 };
 
 var cursor = 0;
@@ -234,11 +301,11 @@ var getCellSize = function(boardSize) {
     boardWidth = windowWidth,
     cellWidth = 0,
     borderSpacing = 5;
-    
+
   if (boardWidth > 500) {
     boardWidth = 500;
     borderspacing = 0;
   }
-  
+
   return Math.floor((boardWidth - (borderSpacing * (boardSize + 2))) / boardSize);
 }

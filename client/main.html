@@ -1,7 +1,7 @@
 <head>
   <title>polytunes</title>
   <meta name="viewport" content="width=device-width">
-  
+
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/icons/apple-touch-icon-57x57.png" />
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/icons/apple-touch-icon-114x114.png" />
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/icons/apple-touch-icon-72x72.png" />
@@ -23,30 +23,3 @@
   <meta name="msapplication-wide310x150logo" content="/icons/mstile-310x150.png" />
   <meta name="msapplication-square310x310logo" content="/icons/mstile-310x310.png" />
 </head>
-
-<template name="board">
-  <table id="board">
-    <tbody>
-      {{#each rows}}
-        <tr>
-          {{#each .}}
-            <td class="{{#if active}}active {{color}}{{/if}}" data-id="{{id}}" data-frequency="{{frequency}}" style="width:{{size}}px;height:{{size}}px;"></td>
-          {{/each}}
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
-
-  {{ > tooltips }}
-</template>
-
-<template name="controls">
-  <div class="player-list">
-    {{{ playerList }}}
-  </div>
-  <div class="controls">
-    <button id="play" class="e"><i class="fa fa-{{ playButtonIcon }}"></i></button>
-  </div>
-
-  {{ > tooltips }}
-</template>

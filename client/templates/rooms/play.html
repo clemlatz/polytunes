@@ -1,0 +1,53 @@
+<template name="roomPlay">
+  <div class="room play">
+    {{#if notLogged}}
+      {{> login}}
+    {{else}}
+      {{#if notEnoughPlayers}}
+        {{> waitingForPlayers}}
+      {{else}}
+        {{> board}}
+        {{> controls}}
+      {{/if}}
+    {{/if}}
+  </div>
+</template>
+
+<template name="waitingForPlayers">
+  <p><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></p>
+  <h1>{{_ "waiting-for-another-player"}}</h1>
+  <p>{{_ "waiting-two-player-game"}}</p>
+
+  {{#if isPublic}}
+    <p>{{_ "waiting-in-public-room"}}</p>
+  {{else}}
+    <p>{{_ "waiting-in-private-room"}}</p>
+  {{/if}}
+
+  <p>{{_ "waiting-invite-with-url"}}</p>
+</template>
+
+<template name="board">
+  <table id="board">
+    <tbody>
+      {{#each rows}}
+        <tr>
+          {{#each .}}
+            <td class="{{#if active}}active player_{{slot}}{{/if}}" data-id="{{id}}" data-frequency="{{frequency}}" style="width:{{size}}px;height:{{size}}px;"></td>
+          {{/each}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<template name="controls">
+  <div class="player-list">
+    {{#each players}}
+      <span class="player player_{{@index}} user_{{userId}}" data-slot={{@index}}>{{ name }}</span>
+    {{/each}}
+  </div>
+  <div class="controls">
+    <button id="play"><i class="fa fa-{{playButtonIcon}}"></i></button>
+  </div>
+</template>
