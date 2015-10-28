@@ -13,7 +13,7 @@ Template.home.helpers({
 Template.home.events({
   "click #createPrivateRoom": function() {
     Meteor.call('createRoom', { isPublic: false }, function(error, roomId) {
-      Router.go('roomPlay', { '_id': roomId })
+      Router.go('roomPlay', { '_id': roomId });
     });
   }
 });
@@ -28,6 +28,7 @@ Template.roomPlay.onCreated(function() {
   let room = this.data.room;
 
   if (room.players.length >= 2) {
+    toastr.info(TAPi18n.__('room-full-watch-mode'));
     Router.go("roomWatch", { _id: room._id });
   }
 

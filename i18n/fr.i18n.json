@@ -8,5 +8,8 @@
   "continue": "Continuer",
   "bump-note": "fausse note",
   "sorry-we-couldn-t-find-that-page": "Désolé, cette page est introuvable.",
-  "cannot-add-notes-watch-mode": "Vous ne pouvez pas ajouter de note en mode spectateur."
+  "cannot-add-notes-watch-mode": "Vous ne pouvez pas ajouter de note en mode
+spectateur.",
+  "room-full-watch-mode": "Vous avez rejoint la salle en mode spectateur
+ parce qu'elle est déjà pleine."
 }
