@@ -7,5 +7,6 @@
   "hi-whats-your-name": "Hi, what's your name ?",
   "continue": "Continue",
   "bump-note": "bump note",
-  "sorry-we-couldn-t-find-that-page": "Sorry, we couldn't find that page"
+  "sorry-we-couldn-t-find-that-page": "Sorry, we couldn't find that page",
+  "cannot-add-notes-watch-mode": "You cannot add notes to the board while in watch mode."
 }

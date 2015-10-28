@@ -174,7 +174,7 @@ Template.roomPlay.events({
 
 Template.roomWatch.events({
   'click #board': function() {
-    alert("You cannot add notes to the board in watch mode.");
+    toastr.warning(TAPi18n.__("cannot-add-notes-watch-mode"));
   }
 });
 
@@ -192,6 +192,11 @@ Meteor.startup( function() {
 
   // Set language
   TAPi18n.setLanguage(navigator.language || navigator.userLanguage);
+
+  // Notification options
+  toastr.options = {
+    "positionClass": "toast-bottom-left",
+  }
 });
 
 togglePlay = (function() {

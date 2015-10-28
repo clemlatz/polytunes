@@ -7,5 +7,6 @@
   "hi-whats-your-name": "Bonjour, qui êtes-vous ?",
   "continue": "Continuer",
   "bump-note": "fausse note",
-  "sorry-we-couldn-t-find-that-page": "Désolé, cette page est introuvable."
+  "sorry-we-couldn-t-find-that-page": "Désolé, cette page est introuvable.",
+  "cannot-add-notes-watch-mode": "Vous ne pouvez pas ajouter de note en mode spectateur."
 }
