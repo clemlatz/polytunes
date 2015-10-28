@@ -33,6 +33,17 @@ Other contributors are [listed on Github](https://github.com/iwazaru/polytunes/g
 
 ## Changelog
 
+0.6 (2015-10-29)
+* Polytunes is now a two-player game: invite a friend or play with a complete
+random stranger
+* Multiple rooms can be created: public room that can be joined by anyone and
+private rooms that only users knowing the url can join
+* The board is divided in two sides, each player can only play on its side
+* Only two player can play in the same room, but if more players join the room,
+they can watch
+* If a player is alone in a room, a waiting message will be displayed
+* Added internationalization and french translations
+
 0.5.1 (2015-10-19)
 * Fixed user timeout setInterval interval
 
