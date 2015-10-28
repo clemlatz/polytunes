@@ -12,7 +12,7 @@ Polytunes inspirations are Yamaha's [Tenori-on](http://usa.yamaha.com/products/m
 
 ## Live demo
 
-http://polytunes.es/
+http://polytun.es/
 
 ## Installation
 
@@ -35,7 +35,7 @@ Other contributors are [listed on Github](https://github.com/iwazaru/polytunes/g
 * Fixed user timeout setInterval interval
 
 0.5 (2015-10-17)
-* Click-and-hold to play a note, release mouse button to add it to the board, 
+* Click-and-hold to play a note, release mouse button to add it to the board,
 or release outside of the board to cancel
 * Added shorcut: press spacebar to toggle playback
 * Playback cursor is reset when playback is paused
