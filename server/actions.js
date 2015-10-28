@@ -130,7 +130,6 @@ Meteor.methods({
         partition: notes
       }
     });
-    console.log(result);
     console.log(`User ${user.profile.name} left room ${roomId}.`);
   }
 });

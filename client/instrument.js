@@ -38,8 +38,15 @@ Instrument = class Instrument {
   }
 
   startPlayingNote(frequency) {
+    var duration = this.getNoteDuration();
     this.stopPlayingNote();
-    this.currentWad = this.getWad().play({ pitch: frequency });
+    this.currentWad = this.getWad().play({
+      pitch: frequency,
+      env: {
+        decay: duration / 1000 * .1,
+        release: duration / 1000 * .75
+      }
+    });
   }
 
   stopPlayingNote() {
