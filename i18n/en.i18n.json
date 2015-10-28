@@ -10,6 +10,8 @@
   "sorry-we-couldn-t-find-that-page": "Sorry, we couldn't find that page",
   "cannot-add-notes-watch-mode": "You cannot add notes to the board while
 in watch mode.",
-  "room-full-watch-mode": "You can't join this room because it already has two 
-players, but you can watch."
+  "room-full-watch-mode": "You can't join this room because it already has two
+players, but you can watch.",
+ "cannot-add-notes-on-this-side": "You can only add note on your side of the 
+board (above your name)."
 }

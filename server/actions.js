@@ -30,20 +30,35 @@ Meteor.methods({
 	},
 
 	updateCell: (cell) => {
+    "use strict";
 
-        let result = Rooms.update(
-      		{	_id: Meteor.user().currentRoom,
-      			'partition.id': cell.id
-    		  },
-          { $set: {
-            'partition.$.active': cell.active,
-            'partition.$.slot': cell.slot
-          } }
-    		);
-        if (!result) {
-          console.log(`An error occured while updating cell [${cell.id}] : ${cell.active}`);
-        }
-    },
+    let room = Rooms.findOne(Meteor.user().currentRoom);
+
+    // Get cell coordinates
+    let coord = cell.id.match(/{(\d+);(\d+)}/);
+    cell.x = coord[1];
+    cell.y = coord[2];
+
+    // Check if user can update current cell
+    if ((cell.slot == 0 && cell.x > (room.board.width / 2) - 1) ||
+          (cell.slot == 1 && cell.x < room.board.width / 2)
+      ) {
+      throw new Meteor.Error(500, `cannot-add-notes-on-this-side`);
+    }
+
+    let result = Rooms.update(
+  		{	_id: Meteor.user().currentRoom,
+  			'partition.id': cell.id
+		  },
+      { $set: {
+        'partition.$.active': cell.active,
+        'partition.$.slot': cell.slot
+      } }
+		);
+    if (!result) {
+      throw new Meteor.Error(500, `An error occured while updating cell ${cell.id}`);
+    }
+  },
 
 	guestLogin: function(name, color) {
 		let user = Meteor.user();

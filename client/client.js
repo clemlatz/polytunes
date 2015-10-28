@@ -4,6 +4,21 @@ function debug(msg) {
   }
 }
 
+Meteor.startup( function() {
+  Session.set("playing", false);
+  instrument = new Instrument();
+  Meteor.call('userPings');
+
+  // Set language
+  TAPi18n.setLanguage(navigator.language || navigator.userLanguage);
+
+  // Notification options
+  toastr.options = {
+    positionClass: "toast-bottom-left",
+    preventDuplicates: true
+  }
+});
+
 Template.home.helpers({
   rooms: function() {
     return Rooms.find({ isPublic: true });
@@ -161,16 +176,20 @@ Template.roomPlay.events({
       cell = { id: target.data('id') };
 
     if (target.hasClass('active')) {
-      target.removeClass("active"); // optimistic ui
+      // target.removeClass("active"); // optimistic ui
       cell.active = false;
     } else {
       cell.slot = $('.user_'+Meteor.userId()).data('slot');
       cell.active = true;
-      target.addClass("active player_"+cell.slot); // optimistic ui
+      // target.addClass("active player_"+cell.slot); // optimistic ui
     }
 
     debug("Updating cell "+cell.id);
-    Meteor.call('updateCell', cell);
+    Meteor.call('updateCell', cell, function(error, result) {
+      if (error) {
+        toastr.error(TAPi18n.__(error.reason));
+      }
+    });
   },
 });
 
@@ -184,20 +203,6 @@ Template.controls.events({
   'click #play': function (event, template) {
     togglePlay(this.room);
     instrument.playNote(1); // Hack to fix sound in Safari iOS
-  }
-});
-
-Meteor.startup( function() {
-  Session.set("playing", false);
-  instrument = new Instrument();
-  Meteor.call('userPings');
-
-  // Set language
-  TAPi18n.setLanguage(navigator.language || navigator.userLanguage);
-
-  // Notification options
-  toastr.options = {
-    "positionClass": "toast-bottom-left",
   }
 });
 
@@ -229,7 +234,7 @@ function play() {
   for(let y = 0; y < room.board.height; y++) {
     let cell = boardData[y][cursor];
     if (cell.active) {
-      let $cell = $(`td[data-id="{${cursor},${y}}"]`);
+      let $cell = $(`td[data-id="{${cursor};${y}}"]`);
       instrument.playNote(cell.frequency);
       visualEffect($cell, cursor, y);
     }
@@ -240,10 +245,10 @@ function play() {
 
 var visualEffect = function($cell, x, y) {
 
-    var around = $(`td[data-id="{${x-1},${y}}"],
-      td[data-id="{${x+1},${y}}"],
-      td[data-id="{${x},${y-1}}"],
-      td[data-id="{${x},${y+1}}"]`);
+    var around = $(`td[data-id="{${x-1};${y}}"],
+      td[data-id="{${x+1};${y}}"],
+      td[data-id="{${x};${y-1}}"],
+      td[data-id="{${x};${y+1}}"]`);
 
     // Main cell effect
     $cell.addClass('playing');
