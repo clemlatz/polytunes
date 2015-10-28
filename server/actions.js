@@ -33,7 +33,8 @@ Meteor.methods({
 	updateCell: (cell) => {
     "use strict";
 
-    let room = Rooms.findOne(Meteor.user().currentRoom);
+    let room = Rooms.findOne(Meteor.user().currentRoom),
+      user = Meteor.user();
 
     // Get cell coordinates
     let coord = cell.id.match(/{(\d+);(\d+)}/);
@@ -48,12 +49,13 @@ Meteor.methods({
     }
 
     let result = Rooms.update(
-  		{	_id: Meteor.user().currentRoom,
+  		{	_id: user.currentRoom,
   			'partition.id': cell.id
 		  },
       { $set: {
         'partition.$.active': cell.active,
-        'partition.$.slot': cell.slot
+        'partition.$.slot': cell.slot,
+        'partition.$.updatedBy': user._id
       } }
 		);
     if (!result) {
@@ -99,19 +101,36 @@ Meteor.methods({
   },
 
   userLeavesRoom: function(roomId) {
-    let user = Meteor.user();
-    if (!user) {
+    let user = Meteor.user(),
+      room = Rooms.findOne(roomId);
+
+    if (!user || !room) {
       return false;
     }
 
+    let notes = room.partition;
+
     Meteor.users.update(user, { $unset: { 'currentRoom': "" } });
+
+    // Clear notes created by this user
+    for (let i = 0, c = notes.length; i < c; i++) {
+      if (notes[i].updatedBy == user._id) {
+        notes[i].active = false;
+        notes[i].slot = null;
+        notes[i].updatedBy = null;
+      }
+    }
 
     Rooms.update(roomId, {
       $pull: {
         players: { userId: user._id },
         multi: true
+      },
+      $set: {
+        partition: notes
       }
     });
+    console.log(result);
     console.log(`User ${user.profile.name} left room ${roomId}.`);
   }
 });
