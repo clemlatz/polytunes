@@ -4,6 +4,8 @@
 
 Polytunes is a collaborative music game playable in the browser and on touch devices. The goal is to create melodies by collaborating without speaking to (or event knowing!) other players. If you don't feel like composing you can just watch and listen to others creating music in real-time.
 
+Follow Polytunes on [Facebook](https://www.facebook.com/playpolytunes) and [Devpost](http://devpost.com/software/polytunes)
+
 ## Inspirations
 
 Polytunes inspirations are Yamaha's [Tenori-on](http://usa.yamaha.com/products/musical-instruments/entertainment/tenori-on/tnr-o/), André Michelle's [Tonematrix](http://tonematrix.audiotool.com/) and Steve Reich's experiments on [Phasing](https://en.wikipedia.org/wiki/Phasing_(music)).
