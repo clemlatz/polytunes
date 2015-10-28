@@ -157,15 +157,16 @@ Template.roomPlay.events({
   // Add note to the board when mouse button is released
   'mouseup td': function (event, template) {
     let target = $(event.target),
+      slot = $('player_'+Meteor.userId()).data('slot'),
       cell = { id: target.data('id') };
 
     if (target.hasClass('active')) {
       target.removeClass("active"); // optimistic ui
       cell.active = false;
     } else {
-      cell.color = Meteor.user().profile.color;
+      cell.slot = $('.user_'+Meteor.userId()).data('slot');
       cell.active = true;
-      target.addClass("active "+cell.color); // optimistic ui
+      target.addClass("active player_"+cell.slot); // optimistic ui
     }
 
     debug("Updating cell "+cell.id);

@@ -32,12 +32,12 @@ Meteor.methods({
 	updateCell: (cell) => {
 
         let result = Rooms.update(
-      		{	_id: Meteor.user().profile.currentRoom,
+      		{	_id: Meteor.user().currentRoom,
       			'partition.id': cell.id
     		  },
           { $set: {
             'partition.$.active': cell.active,
-            'partition.$.color': cell.color
+            'partition.$.slot': cell.slot
           } }
     		);
         if (!result) {
@@ -55,25 +55,27 @@ Meteor.methods({
         lastSeenAt: (new Date()).getTime(),
       }
     });
-    Meteor.call('userJoinsRoom', user.profile.currentRoom);
+    Meteor.call('userJoinsRoom', user.currentRoom);
     console.log(`User ${name} logged in.`);
 	},
 
   userJoinsRoom: function(roomId) {
-    let user = Meteor.user();
-    Meteor.users.update(user, {
-      $set: {
-        'profile.currentRoom': roomId
-      }
-    });
+    let user = Meteor.user(),
+      room = Rooms.findOne(roomId);
+
+    Meteor.users.update(user, { $set: { 'currentRoom': roomId } });
 
     // Remove player before inserting
-    Rooms.update(roomId, { $pull: { players: { userId: user._id }, multi: true } });
-    Rooms.update(roomId, {
+    Rooms.update(room._id, { $pull: { players: { userId: user._id }, multi: true } });
+
+    // Insert player
+    let slot = room.players.length + 1;
+    Rooms.update(room._id, {
       $push: {
         players: {
           userId: user._id,
-          name: user.profile.name
+          name: user.profile.name,
+          slot: room.players.length + 1
         }
       }
     });
@@ -85,11 +87,9 @@ Meteor.methods({
     if (!user) {
       return false;
     }
-    Meteor.users.update(user, {
-      $unset: {
-        'profile.currentRoom': ""
-      }
-    });
+
+    Meteor.users.update(user, { $unset: { 'currentRoom': "" } });
+
     Rooms.update(roomId, {
       $pull: {
         players: { userId: user._id },
