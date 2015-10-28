@@ -3,10 +3,6 @@ Meteor.startup( function() {
   AccountsGuest.anonymous = true;
 });
 
-if (Rooms.find().count() === 0) {
-    Meteor.call('createRoom');
-}
-
 Meteor.publish('rooms', function() {
     return Rooms.find();
 });

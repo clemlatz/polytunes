@@ -14,7 +14,8 @@ Meteor.methods({
             scale: SCALE_VALUES.MAJOR
         },
         tempo: 120,
-        createdAt: new Date()
+        createdAt: new Date(),
+        createdBy: Meteor.userId()
     }, room);
 
     let music = new Music();

@@ -25,12 +25,32 @@ Template.home.helpers({
   }
 });
 
-Template.home.events({
-  "click #createPrivateRoom": function() {
-    Meteor.call('createRoom', { isPublic: false }, function(error, roomId) {
-      Router.go('roomPlay', { '_id': roomId });
-    });
+Template.create.onCreated(function() {
+  Meteor.call('createRoom', { isPublic: false }, function(error, roomId) {
+    Router.go('roomPlay', { '_id': roomId });
+  });
+});
+
+Template.join.onCreated(function() {
+
+  // Join a public room with one other player (no more, no less)
+  let room = Rooms.findOne({ isPublic: true, 'players.0': { $exists: true }, 'players.1': { $exists: false } });
+  if (room) {
+    Router.go("roomPlay", { _id: room._id });
+    return;
   }
+
+  // Else join an empty public room
+  room = Rooms.findOne({ isPublic: true, 'players.0': { $exists: false } });
+  if (room) {
+    Router.go("roomPlay", { _id: room._id });
+    return;
+  }
+
+  // Else create a new public room
+  Meteor.call("createRoom", { isPublic: true }, function(error, roomId) {
+    Router.go("roomPlay", { _id: roomId });
+  });
 });
 
 Template.roomPlay.helpers({
