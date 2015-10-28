@@ -54,8 +54,17 @@ Template.join.onCreated(function() {
 });
 
 Template.roomPlay.helpers({
-  isLogged: function () {
-    return !! Meteor.user().profile.name
+  notLogged: function () {
+    return ! Meteor.user().profile.name
+  },
+  notEnoughPlayers: function() {
+    return (this.room.players.length < 2);
+  }
+});
+
+Template.waitingForPlayers.helpers({
+  isPublic: function() {
+    return this.room.isPublic;
   }
 });
 

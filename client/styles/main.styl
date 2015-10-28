@@ -3,6 +3,11 @@
     src: url("/fonts/Roboto-Light.ttf");
   }
 
+  @font-face {
+    font-family: 'Roboto-Regular';
+    src: url("/fonts/Roboto-Regular.ttf");
+  }
+
   body {
     background:  black;
     font-family: 'Roboto-Light';
@@ -12,7 +17,12 @@
   }
 
   * {
-    font-family: 'Roboto-Light', monospace;
+    font-family: 'Roboto-Light', sans-serif;
+  }
+
+  p {
+    line-height: 1.2em;
+    margin: 10px 0;
   }
 
   .main {
@@ -190,10 +200,6 @@
 
 .hidden {
   display: none;
-}
-
-p {
-  margin:  0;
 }
 
 input,

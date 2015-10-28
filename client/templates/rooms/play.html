@@ -1,12 +1,30 @@
 <template name="roomPlay">
   <div class="room play">
-    {{#if isLogged}}
-      {{> board}}
-      {{> controls}}
-    {{else}}
+    {{#if notLogged}}
       {{> login}}
+    {{else}}
+      {{#if notEnoughPlayers}}
+        {{> waitingForPlayers}}
+      {{else}}
+        {{> board}}
+        {{> controls}}
+      {{/if}}
     {{/if}}
   </div>
+</template>
+
+<template name="waitingForPlayers">
+  <p><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></p>
+  <h1>{{_ "waiting-for-another-player"}}</h1>
+  <p>{{_ "waiting-two-player-game"}}</p>
+
+  {{#if isPublic}}
+    <p>{{_ "waiting-in-public-room"}}</p>
+  {{else}}
+    <p>{{_ "waiting-in-private-room"}}</p>
+  {{/if}}
+
+  <p>{{_ "waiting-invite-with-url"}}</p>
 </template>
 
 <template name="board">

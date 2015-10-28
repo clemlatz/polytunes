@@ -1,17 +1,19 @@
 {
   "welcome-to-polytunes": "welcome to polytunes",
-  "join-a-public-room": "join a public room",
-  "create-a-public-room": "create a private room",
+  "play-with-a-stranger": "play with a stranger",
+  "play-with-a-friend": "play with a friend",
   "stay-tuned": "stay tuned",
   "application-is-loading": "Application is loading...",
   "hi-whats-your-name": "Hi, what's your name ?",
   "continue": "Continue",
   "bump-note": "bump note",
   "sorry-we-couldn-t-find-that-page": "Sorry, we couldn't find that page",
-  "cannot-add-notes-watch-mode": "You cannot add notes to the board while
-in watch mode.",
-  "room-full-watch-mode": "You can't join this room because it already has two
-players, but you can watch.",
- "cannot-add-notes-on-this-side": "You can only add note on your side of the 
-board (above your name)."
+  "cannot-add-notes-watch-mode": "You cannot add notes to the board while in watch mode.",
+  "room-full-watch-mode": "You can't join this room because it already has two players, but you can watch.",
+  "cannot-add-notes-on-this-side": "You can only add note on your side of the board (above your name).",
+  "waiting-for-another-player": "waiting for another player",
+  "waiting-two-player-game": "Polytunes is a two-player game, and will start as soon as another player joins this room.",
+  "waiting-in-public-room": "You're in a public room, maybe someone will eventually join in. But if not, you can always bring someone.",
+  "waiting-in-private-room": "You're in a private room, nobody will join you unless you invite him.",
+  "waiting-invite-with-url": "Send this page's URL to invite a friend, your neigbhour, your secret crush or your grandma — anyone can play Polytunes!"
 }

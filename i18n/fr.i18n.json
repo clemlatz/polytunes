@@ -1,17 +1,19 @@
 {
   "welcome-to-polytunes": "bienvenue sur polytunes",
-  "join-a-public-room": "rejoindre une salle publique",
-  "create-a-public-room": "créer une salle privée",
+  "play-with-a-stranger": "jouer avec un inconnu",
+  "play-with-a-friend": "jouer avec un ami",
   "stay-tuned": "restez à l'écoute",
   "application-is-loading": "Chargement de l'application...",
   "hi-whats-your-name": "Bonjour, qui êtes-vous ?",
   "continue": "Continuer",
   "bump-note": "fausse note",
   "sorry-we-couldn-t-find-that-page": "Désolé, cette page est introuvable.",
-  "cannot-add-notes-watch-mode": "Vous ne pouvez pas ajouter de note en mode
-spectateur.",
-  "room-full-watch-mode": "Vous avez rejoint la salle en mode spectateur
- parce qu'elle est déjà pleine.",
-  "cannot-add-notes-on-this-side": "Vous ne pouvez ajouter des notes que sur
- votre côté du plateau, au-dessus de votre nom."
+  "cannot-add-notes-watch-mode": "Vous ne pouvez pas ajouter de note en mode spectateur.",
+  "room-full-watch-mode": "Vous avez rejoint la salle en mode spectateur parce qu'elle est déjà pleine.",
+  "cannot-add-notes-on-this-side": "Vous ne pouvez ajouter des notes que sur votre côté du plateau, au-dessus de votre nom.",
+  "waiting-for-another-player": "en attente d'un autre joueur",
+  "waiting-two-player-game": "Polytunes se joue à deux : la partie commencera dès que quelqu'un d'autre aura rejoint la salle.",
+  "waiting-in-public-room": "Vous êtes dans une salle publique, peut-être allez-vous être rejoint par un inconnu ? Dans le cas contraire, vous pouvez toujours inviter quelqu'un.",
+  "waiting-in-private-room": "Vous êtes dans une salle privée, personne ne peut se joindre à vous sans avoir été invité.",
+  "waiting-invite-with-url": "Envoyer l'URL de cette page pour inviter un ami, un voisin, votre grand-mère, tout le monde peut jouer à Polytunes !"
 }
