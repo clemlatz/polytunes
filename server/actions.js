@@ -2,6 +2,7 @@
 
 Meteor.methods({
 	createRoom: (room) => {
+    let music = new Polytunes.Music();
 		room = _.extend({
         isPublic: true,
         board: {
@@ -13,14 +14,12 @@ Meteor.methods({
         synthetizer: {
             base: 260,
             wave: "sine",
-            scale: Polytunes.SCALE_VALUES.MAJOR
+            scale: music.SCALE_VALUES.MAJOR
         },
         tempo: 120,
         createdAt: new Date(),
         createdBy: Meteor.userId()
     }, room);
-
-    let music = new Polytunes.Music();
     let notes = music.getScaleNotes(room.synthetizer.scale, room.synthetizer.base, room.board.height);
     for (let y = 0; y < room.board.height; y++) {
       for (let x = 0; x < room.board.width; x++) {
@@ -65,12 +64,11 @@ Meteor.methods({
     }
   },
 
-	guestLogin: function(name, color) {
+	guestLogin: function(name) {
 		let user = Meteor.user();
     Meteor.users.update(user, {
       $set: {
         'profile.name': name,
-        'profile.color': color,
         'profile.online': true,
         lastSeenAt: (new Date()).getTime(),
       }

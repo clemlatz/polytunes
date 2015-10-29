@@ -131,19 +131,6 @@ Template.controls.helpers({
   }
 });
 
-Template.login.helpers({
-  random_color: function() {
-    var colors = [];
-    for (color in COLOR_VALUES) {
-      colors.push({
-        name: color,
-        code: COLOR_VALUES[color]
-      });
-    }
-    return colors[parseInt(Math.random() * (colors.length))];
-  }
-});
-
 // Focus on login field when template is rendered
 Template.login.rendered = function() {
   if(!this._rendered) {
@@ -155,12 +142,7 @@ Template.login.rendered = function() {
 Template.login.events({
   'submit #login-form': event => {
     event.preventDefault();
-
-    const name = event.target.name.value,
-      color = event.target.color.value;
-
-    Meteor.call('guestLogin', name, color);
-
+    Meteor.call('guestLogin', event.target.name.value);
     return false;
   }
 });
