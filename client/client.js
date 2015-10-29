@@ -1,3 +1,5 @@
+"use strict";
+
 function debug(msg) {
   if (Session.get('debug') === true) {
     console.log(msg);
@@ -6,7 +8,7 @@ function debug(msg) {
 
 Meteor.startup( function() {
   Session.set("playing", false);
-  instrument = new Instrument();
+  window.instrument = new Instrument();
   Meteor.call('userPings');
 
   // Set language
@@ -21,7 +23,7 @@ Meteor.startup( function() {
 
 Template.home.helpers({
   rooms: function() {
-    return Rooms.find({ isPublic: true });
+    return Polytunes.Rooms.find({ isPublic: true });
   }
 });
 
@@ -34,14 +36,14 @@ Template.create.onCreated(function() {
 Template.join.onCreated(function() {
 
   // Join a public room with one other player (no more, no less)
-  let room = Rooms.findOne({ isPublic: true, 'players.0': { $exists: true }, 'players.1': { $exists: false } });
+  let room = Polytunes.Rooms.findOne({ isPublic: true, 'players.0': { $exists: true }, 'players.1': { $exists: false } });
   if (room) {
     Router.go("roomPlay", { _id: room._id });
     return;
   }
 
   // Else join an empty public room
-  room = Rooms.findOne({ isPublic: true, 'players.0': { $exists: false } });
+  room = Polytunes.Rooms.findOne({ isPublic: true, 'players.0': { $exists: false } });
   if (room) {
     Router.go("roomPlay", { _id: room._id });
     return;
@@ -84,7 +86,7 @@ Template.roomPlay.onDestroyed(function() {
   let room = this.data.room;
   Meteor.call("userLeavesRoom", room._id);
   if (Session.get("playing")) {
-    togglePlay();
+    window.togglePlay();
   }
 });
 
@@ -101,8 +103,9 @@ Template.board.helpers({
     if (!room)
       return false;
 
-    boardData = [], i = 0, cellSize = getCellSize(room.board.width);
-    for (let y = 0; y < room.board.height ; y++) {
+    boardData = [];
+    let cellSize = getCellSize(room.board.width);
+    for (let y = 0, i = 0; y < room.board.height ; y++) {
       let row = [];
       for (let x = 0; x < room.board.width; x++) {
         let cell = room.partition[i];
@@ -128,19 +131,6 @@ Template.controls.helpers({
   }
 });
 
-Template.login.helpers({
-  random_color: function() {
-    var colors = [];
-    for (color in COLOR_VALUES) {
-      colors.push({
-        name: color,
-        code: COLOR_VALUES[color]
-      });
-    }
-    return colors[parseInt(Math.random() * (colors.length))];
-  }
-});
-
 // Focus on login field when template is rendered
 Template.login.rendered = function() {
   if(!this._rendered) {
@@ -152,12 +142,7 @@ Template.login.rendered = function() {
 Template.login.events({
   'submit #login-form': event => {
     event.preventDefault();
-
-    const name = event.target.name.value,
-      color = event.target.color.value;
-
-    Meteor.call('guestLogin', name, color);
-
+    Meteor.call('guestLogin', event.target.name.value);
     return false;
   }
 });
@@ -195,7 +180,7 @@ Template.roomPlay.events({
 
   // Stop playing note if mouse button is released
   'mouseup': function() {
-    instrument.stopPlayingNote();
+    window.instrument.stopPlayingNote();
   },
 
   // Add note to the board when mouse button is released
@@ -230,12 +215,12 @@ Template.roomWatch.events({
 
 Template.controls.events({
   'click #play': function (event, template) {
-    togglePlay(this.room);
-    instrument.playNote(1); // Hack to fix sound in Safari iOS
+    window.togglePlay(this.room);
+    window.instrument.playNote(1); // Hack to fix sound in Safari iOS
   }
 });
 
-togglePlay = (function() {
+window.togglePlay = (function() {
   let handler = -1;
   return function() {
     if (handler === -1) {
@@ -297,14 +282,14 @@ var noteDuration = function() {
 var cursor = 0;
 
 var getCellSize = function(boardSize) {
-  var windowWidth = $(window).width();
+  let windowWidth = $(window).width(),
     boardWidth = windowWidth,
     cellWidth = 0,
     borderSpacing = 5;
 
   if (boardWidth > 500) {
     boardWidth = 500;
-    borderspacing = 0;
+    borderSpacing = 5;
   }
 
   return Math.floor((boardWidth - (borderSpacing * (boardSize + 2))) / boardSize);

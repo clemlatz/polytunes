@@ -1,8 +1,10 @@
+"use strict";
+
 var hotkeys = new Hotkeys();
 hotkeys.add({
   combo : "space",
   callback : function(){
-    togglePlay();
+    window.togglePlay();
   }
 });
 
