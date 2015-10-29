@@ -1,4 +1,6 @@
-Instrument = class Instrument {
+"use strict";
+
+window.Instrument = class Instrument {
 
   getWad() {
     var settings = {

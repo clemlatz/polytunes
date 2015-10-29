@@ -1,3 +1,5 @@
+"use strict";
+
 Meteor.methods({
 	createRoom: (room) => {
 		room = _.extend({
@@ -11,29 +13,29 @@ Meteor.methods({
         synthetizer: {
             base: 260,
             wave: "sine",
-            scale: SCALE_VALUES.MAJOR
+            scale: Polytunes.SCALE_VALUES.MAJOR
         },
         tempo: 120,
         createdAt: new Date(),
         createdBy: Meteor.userId()
     }, room);
 
-    let music = new Music();
+    let music = new Polytunes.Music();
     let notes = music.getScaleNotes(room.synthetizer.scale, room.synthetizer.base, room.board.height);
     for (let y = 0; y < room.board.height; y++) {
       for (let x = 0; x < room.board.width; x++) {
         let frequency = notes[room.board.width-y-1];
-        room.partition.push(new Cell(x,y,frequency));
+        room.partition.push(new Polytunes.Cell(x,y,frequency));
       }
     }
 
-    return Rooms.insert(room);
+    return Polytunes.Rooms.insert(room);
 	},
 
 	updateCell: (cell) => {
     "use strict";
 
-    let room = Rooms.findOne(Meteor.user().currentRoom),
+    let room = Polytunes.Rooms.findOne(Meteor.user().currentRoom),
       user = Meteor.user();
 
     // Get cell coordinates
@@ -48,7 +50,7 @@ Meteor.methods({
       throw new Meteor.Error(500, `cannot-add-notes-on-this-side`);
     }
 
-    let result = Rooms.update(
+    let result = Polytunes.Rooms.update(
   		{	_id: user.currentRoom,
   			'partition.id': cell.id
 		  },
@@ -79,16 +81,16 @@ Meteor.methods({
 
   userJoinsRoom: function(roomId) {
     let user = Meteor.user(),
-      room = Rooms.findOne(roomId);
+      room = Polytunes.Rooms.findOne(roomId);
 
     Meteor.users.update(user, { $set: { 'currentRoom': roomId } });
 
     // Remove player before inserting
-    Rooms.update(room._id, { $pull: { players: { userId: user._id }, multi: true } });
+    Polytunes.Rooms.update(room._id, { $pull: { players: { userId: user._id }, multi: true } });
 
     // Insert player
     let slot = room.players.length + 1;
-    Rooms.update(room._id, {
+    Polytunes.Rooms.update(room._id, {
       $push: {
         players: {
           userId: user._id,
@@ -102,7 +104,7 @@ Meteor.methods({
 
   userLeavesRoom: function(roomId) {
     let user = Meteor.user(),
-      room = Rooms.findOne(roomId);
+      room = Polytunes.Rooms.findOne(roomId);
 
     if (!user || !room) {
       return false;
@@ -121,7 +123,7 @@ Meteor.methods({
       }
     }
 
-    Rooms.update(roomId, {
+    Polytunes.Rooms.update(roomId, {
       $pull: {
         players: { userId: user._id },
         multi: true
