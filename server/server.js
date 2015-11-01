@@ -14,3 +14,7 @@ Polytunes.Rooms.allow({
   update: ()=> false,
   remove: ()=> false
 });
+
+Meteor.publish('notifications', function() {
+  return Polytunes.Notifications.find();
+});

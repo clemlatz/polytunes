@@ -97,6 +97,9 @@ Meteor.methods({
         }
       }
     });
+
+    Polytunes.createNotification(room._id, `User ${user.profile.name} joined the room.`);
+
     console.log(`User ${user.profile.name} joined room ${roomId}.`);
   },
 
@@ -130,6 +133,9 @@ Meteor.methods({
         partition: notes
       }
     });
+
+    Polytunes.createNotification(room._id, `User ${user.profile.name} left the room.`);
+
     console.log(`User ${user.profile.name} left room ${roomId}.`);
   }
 });

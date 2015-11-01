@@ -88,6 +88,7 @@ Template.roomPlay.onDestroyed(function() {
   if (Session.get("playing")) {
     window.togglePlay();
   }
+  Session.set("currentRoom", null);
 });
 
 Template.roomWatch.onCreated(function() {
@@ -218,6 +219,27 @@ Template.controls.events({
     window.togglePlay(this.room);
     window.instrument.playNote(1); // Hack to fix sound in Safari iOS
   }
+});
+
+Template.notifications.helpers({
+  notifications: function() {
+    let room = Session.get('currentRoom');
+    if (!room) {
+      return [];
+    }
+    return Polytunes.Notifications.find({ roomId: room._id, timestamp: { $gte: (new Date()).getTime() - 2700 } }).fetch();
+  }
+});
+
+Template.notification.onCreated(function() {
+  let notification = this.data;
+
+  window.instrument.playNote(780);
+  setTimeout( function() { window.instrument.playNote(520); }, 150);
+
+  setTimeout( function() {
+    $("#notification_"+notification._id).fadeOut();
+  }, 2700);
 });
 
 window.togglePlay = (function() {
