@@ -99,13 +99,13 @@ Meteor.methods({
     });
 
     Polytunes.createNotification(room._id, `User ${user.profile.name} joined the room.`);
-
+    
     console.log(`User ${user.profile.name} joined room ${roomId}.`);
   },
 
-  userLeavesRoom: function(roomId) {
-    let user = Meteor.user(),
-      room = Polytunes.Rooms.findOne(roomId);
+  userLeavesRoom: function(roomId, user) {
+    user = user || Meteor.user();
+    let room = Polytunes.Rooms.findOne(roomId);
 
     if (!user || !room) {
       return false;
