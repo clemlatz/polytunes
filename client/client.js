@@ -289,8 +289,10 @@ Template.notifications.helpers({
 Template.notification.onCreated(function() {
   let notification = this.data;
 
-  window.instrument.playNote(780);
-  setTimeout( function() { window.instrument.playNote(520); }, 150);
+  if (notification.options.withSound) {
+    window.instrument.playNote(780);
+    setTimeout( function() { window.instrument.playNote(520); }, 150);    
+  }
 
   setTimeout( function() {
     $("#notification_"+notification._id).fadeOut();

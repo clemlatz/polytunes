@@ -79,7 +79,7 @@ Meteor.methods({
       }
     });
 
-    Polytunes.createNotification(room._id, `user-joined-the-room`, { user_name: user.profile.name });
+    Polytunes.createNotification(room._id, `user-joined-the-room`, { user_name: user.profile.name }, { withSound: true });
 
     console.log(`User ${user.profile.name} joined room ${roomId}.`);
   },
@@ -115,7 +115,7 @@ Meteor.methods({
       }
     });
 
-    Polytunes.createNotification(room._id, "user-left-the-room", { user_name: user.profile.name });
+    Polytunes.createNotification(room._id, "user-left-the-room", { user_name: user.profile.name }, { withSound: false });
 
     console.log(`User ${user.profile.name} left room ${roomId}.`);
   }
