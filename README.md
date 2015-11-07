@@ -33,6 +33,14 @@ Other contributors are [listed on Github](https://github.com/iwazaru/polytunes/g
 
 ## Changelog
 
+0.7 (2015-11-07)
+* Added a solo play mode
+* Added notifications when player joins or watch
+* Fixed player not disconnected after timeout
+* Fixed browser language detection on Safari
+* Prevented player joining a room before entering a name
+* Prevented player deleting notes from other's players side
+
 0.6 (2015-10-29)
 * Polytunes is now a two-player game: invite a friend or play with a complete
 random stranger
