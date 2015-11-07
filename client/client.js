@@ -82,7 +82,7 @@ Template.waitingForPlayers.onRendered(function () {
   });
 });
 
-Template.waitingForPlayers.onDestroyed(function searchResultsonDestroyed() {
+Template.waitingForPlayers.onDestroyed(function () {
   this.clipboard.destroy();
 });
 
@@ -120,6 +120,12 @@ Template.roomWatch.onCreated(function() {
 Template.solo.onCreated(function() {
   let room = this.data.room;
   Session.set("currentRoom", room);
+});
+
+Template.solo.onDestroyed(function() {
+  if (Session.get("playing")) {
+    window.togglePlay();
+  }
 });
 
 let boardData;
@@ -291,7 +297,7 @@ Template.notification.onCreated(function() {
 
   if (notification.options.withSound) {
     window.instrument.playNote(780);
-    setTimeout( function() { window.instrument.playNote(520); }, 150);    
+    setTimeout( function() { window.instrument.playNote(520); }, 150);
   }
 
   setTimeout( function() {
