@@ -17,7 +17,7 @@ Meteor.methods({
     cell.x = coord[1];
     cell.y = coord[2];
 
-    // Check if user can update current cell
+    // Check if user can update this side of the board
     if ((cell.slot == 0 && cell.x > (room.board.width / 2) - 1) ||
           (cell.slot == 1 && cell.x < room.board.width / 2)
       ) {
@@ -78,7 +78,7 @@ Meteor.methods({
       }
     });
 
-    Polytunes.createNotification(room._id, `User ${user.profile.name} joined the room.`);
+    Polytunes.createNotification(room._id, `user-joined-the-room`, { user_name: user.profile.name });
 
     console.log(`User ${user.profile.name} joined room ${roomId}.`);
   },
@@ -114,7 +114,7 @@ Meteor.methods({
       }
     });
 
-    Polytunes.createNotification(room._id, `User ${user.profile.name} left the room.`);
+    Polytunes.createNotification(room._id, "user-left-the-room", { user_name: user.profile.name });
 
     console.log(`User ${user.profile.name} left room ${roomId}.`);
   }

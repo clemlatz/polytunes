@@ -154,7 +154,7 @@ Template.login.rendered = function() {
 }
 
 Template.login.events({
-  'submit #login-form': function() {
+  'submit #login-form': function(event) {
     event.preventDefault();
     const params = Router.current().params;
     Meteor.call('guestLogin', event.target.name.value, (error, result) => {
@@ -356,3 +356,7 @@ var getCellSize = function(boardSize) {
 
   return Math.floor((boardWidth - (borderSpacing * (boardSize + 2))) / boardSize);
 }
+
+UI.registerHelper('t', function(key, options) {
+  return TAPi18n.__(key, options);
+});
