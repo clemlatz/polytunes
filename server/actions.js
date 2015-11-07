@@ -16,6 +16,7 @@ Meteor.methods({
     let coord = cell.id.match(/{(\d+);(\d+)}/);
     cell.x = coord[1];
     cell.y = coord[2];
+    console.log(cell);
 
     // Check if user can update this side of the board
     if ((cell.slot == 0 && cell.x > (room.board.width / 2) - 1) ||
