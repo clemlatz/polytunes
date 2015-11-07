@@ -48,8 +48,6 @@ Meteor.methods({
         lastSeenAt: (new Date()).getTime(),
       }
     });
-    console.log(user.currentRoom);
-    Meteor.call('userJoinsRoom', user.currentRoom);
     console.log(`User ${name} logged in.`);
 	},
 

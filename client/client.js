@@ -72,7 +72,12 @@ Template.waitingForPlayers.helpers({
 });
 
 Template.roomPlay.onCreated(function() {
-  let room = this.data.room;
+  let room = this.data.room,
+    user = Meteor.user();
+
+  if (!user.profile.name) {
+    Router.go("login", { roomId: room._id });
+  }
 
   if (room.players.length >= 2) {
     toastr.info(TAPi18n.__('room-full-watch-mode'));
@@ -149,9 +154,12 @@ Template.login.rendered = function() {
 }
 
 Template.login.events({
-  'submit #login-form': event => {
+  'submit #login-form': function() {
     event.preventDefault();
-    Meteor.call('guestLogin', event.target.name.value);
+    const params = Router.current().params;
+    Meteor.call('guestLogin', event.target.name.value, (error, result) => {
+      Router.go('roomPlay', { _id: params.roomId });
+    });
     return false;
   }
 });
