@@ -1,0 +1,13 @@
+<template name="notifications">
+  <ul class="notifications">
+    {{#each notifications}}
+      {{> notification}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="notification">
+  <li id="notification_{{_id}}" class="notification">
+      {{t message variables}}
+  </li>
+</template>

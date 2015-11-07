@@ -2,32 +2,7 @@
 
 Meteor.methods({
 	createRoom: (room) => {
-    let music = new Polytunes.Music();
-		room = _.extend({
-        isPublic: true,
-        board: {
-            width: 16,
-            height: 16
-        },
-        players: [],
-        partition: [],
-        synthetizer: {
-            base: 260,
-            wave: "sine",
-            scale: music.SCALE_VALUES.MAJOR
-        },
-        tempo: 120,
-        createdAt: new Date(),
-        createdBy: Meteor.userId()
-    }, room);
-    let notes = music.getScaleNotes(room.synthetizer.scale, room.synthetizer.base, room.board.height);
-    for (let y = 0; y < room.board.height; y++) {
-      for (let x = 0; x < room.board.width; x++) {
-        let frequency = notes[room.board.width-y-1];
-        room.partition.push(new Polytunes.Cell(x,y,frequency));
-      }
-    }
-
+		room = new Polytunes.Room(room);
     return Polytunes.Rooms.insert(room);
 	},
 
@@ -41,8 +16,9 @@ Meteor.methods({
     let coord = cell.id.match(/{(\d+);(\d+)}/);
     cell.x = coord[1];
     cell.y = coord[2];
+    console.log(cell);
 
-    // Check if user can update current cell
+    // Check if user can update this side of the board
     if ((cell.slot == 0 && cell.x > (room.board.width / 2) - 1) ||
           (cell.slot == 1 && cell.x < room.board.width / 2)
       ) {
@@ -73,7 +49,6 @@ Meteor.methods({
         lastSeenAt: (new Date()).getTime(),
       }
     });
-    Meteor.call('userJoinsRoom', user.currentRoom);
     console.log(`User ${name} logged in.`);
 	},
 
@@ -81,6 +56,12 @@ Meteor.methods({
     let user = Meteor.user(),
       room = Polytunes.Rooms.findOne(roomId);
 
+    // Don't join if user is not logged
+    if (!user.profile.name) {
+      return false;
+    }
+
+    // Update user current room
     Meteor.users.update(user, { $set: { 'currentRoom': roomId } });
 
     // Remove player before inserting
@@ -97,14 +78,17 @@ Meteor.methods({
         }
       }
     });
+
+    Polytunes.createNotification(room._id, `user-joined-the-room`, { user_name: user.profile.name }, { withSound: true });
+
     console.log(`User ${user.profile.name} joined room ${roomId}.`);
   },
 
-  userLeavesRoom: function(roomId) {
-    let user = Meteor.user(),
-      room = Polytunes.Rooms.findOne(roomId);
+  userLeavesRoom: function(roomId, user) {
+    user = user || Meteor.user();
+    let room = Polytunes.Rooms.findOne(roomId);
 
-    if (!user || !room) {
+    if (!user || !room || !user.profile.name) {
       return false;
     }
 
@@ -130,6 +114,9 @@ Meteor.methods({
         partition: notes
       }
     });
+
+    Polytunes.createNotification(room._id, "user-left-the-room", { user_name: user.profile.name }, { withSound: false });
+
     console.log(`User ${user.profile.name} left room ${roomId}.`);
   }
 });

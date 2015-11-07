@@ -12,7 +12,8 @@ Meteor.startup( function() {
   Meteor.call('userPings');
 
   // Set language
-  TAPi18n.setLanguage(navigator.language || navigator.userLanguage);
+  const lang = navigator.language || navigator.userLanguage;
+  TAPi18n.setLanguage(lang.substring(0,2));
 
   // Notification options
   toastr.options = {
@@ -67,11 +68,31 @@ Template.roomPlay.helpers({
 Template.waitingForPlayers.helpers({
   isPublic: function() {
     return this.room.isPublic;
+  },
+  'currentUrl': function() {
+    return Router.current().url;
   }
 });
 
+// Init clipboard with event delegation (only on parent)
+Template.waitingForPlayers.onRendered(function () {
+  this.clipboard = new Clipboard('.clipboard');
+  this.clipboard.on('success', (e) => {
+    toastr.success(TAPi18n.__('copied'));
+  });
+});
+
+Template.waitingForPlayers.onDestroyed(function () {
+  this.clipboard.destroy();
+});
+
 Template.roomPlay.onCreated(function() {
-  let room = this.data.room;
+  let room = this.data.room,
+    user = Meteor.user();
+
+  if (!user.profile.name) {
+    Router.go("login", { roomId: room._id });
+  }
 
   if (room.players.length >= 2) {
     toastr.info(TAPi18n.__('room-full-watch-mode'));
@@ -88,11 +109,23 @@ Template.roomPlay.onDestroyed(function() {
   if (Session.get("playing")) {
     window.togglePlay();
   }
+  Session.set("currentRoom", null);
 });
 
 Template.roomWatch.onCreated(function() {
   let room = this.data.room;
   Session.set("currentRoom", room);
+});
+
+Template.solo.onCreated(function() {
+  let room = this.data.room;
+  Session.set("currentRoom", room);
+});
+
+Template.solo.onDestroyed(function() {
+  if (Session.get("playing")) {
+    window.togglePlay();
+  }
 });
 
 let boardData;
@@ -122,10 +155,12 @@ Template.board.helpers({
   }
 });
 
-Template.controls.helpers({
+Template.players.helpers({
   players: function() {
     return this.room.players;
-  },
+  }
+});
+Template.controls.helpers({
   playButtonIcon: function() {
     return (Session.get('playing') === true ? 'pause' : 'play');
   }
@@ -140,9 +175,12 @@ Template.login.rendered = function() {
 }
 
 Template.login.events({
-  'submit #login-form': event => {
+  'submit #login-form': function(event) {
     event.preventDefault();
-    Meteor.call('guestLogin', event.target.name.value);
+    const params = Router.current().params;
+    Meteor.call('guestLogin', event.target.name.value, (error, result) => {
+      Router.go('roomPlay', { _id: params.roomId });
+    });
     return false;
   }
 });
@@ -156,7 +194,7 @@ Template.body.events({
   }
 });
 
-Template.roomPlay.events({
+Template.board.events({
 
   // Play note on mouse down if playback is off
   'mousedown td': function(event, template) {
@@ -182,20 +220,24 @@ Template.roomPlay.events({
   'mouseup': function() {
     window.instrument.stopPlayingNote();
   },
+});
+
+
+// Room in play mode
+Template.roomPlay.events({
 
   // Add note to the board when mouse button is released
   'mouseup td': function (event, template) {
     let target = $(event.target),
-      slot = $('player_'+Meteor.userId()).data('slot'),
-      cell = { id: target.data('id') };
+      cell = {
+        id: target.data('id'),
+        slot: $('.user_'+Meteor.userId()).data('slot'),
+      };
 
     if (target.hasClass('active')) {
-      // target.removeClass("active"); // optimistic ui
       cell.active = false;
     } else {
-      cell.slot = $('.user_'+Meteor.userId()).data('slot');
       cell.active = true;
-      // target.addClass("active player_"+cell.slot); // optimistic ui
     }
 
     debug("Updating cell "+cell.id);
@@ -204,8 +246,28 @@ Template.roomPlay.events({
         toastr.error(TAPi18n.__(error.reason));
       }
     });
-  },
-});
+  }
+})
+
+
+// Room in solo mode
+Template.solo.events({
+  // Activate cell without sending note to the server
+  'mouseup td': function(event, template) {
+    const target = $(event.target),
+      id = target.data('id'),
+      coord = id.match(/{(\d+);(\d+)}/),
+      x = coord[1],
+      y = coord[2];
+    if (target.hasClass('active')) {
+      boardData[y][x].active = false;
+      target.removeClass("active player_0");
+    } else {
+      boardData[y][x].active = true;
+      target.addClass("active player_0");
+    }
+  }
+})
 
 Template.roomWatch.events({
   'click #board': function() {
@@ -218,6 +280,29 @@ Template.controls.events({
     window.togglePlay(this.room);
     window.instrument.playNote(1); // Hack to fix sound in Safari iOS
   }
+});
+
+Template.notifications.helpers({
+  notifications: function() {
+    let room = Session.get('currentRoom');
+    if (!room) {
+      return [];
+    }
+    return Polytunes.Notifications.find({ roomId: room._id, timestamp: { $gte: (new Date()).getTime() - 2700 } }).fetch();
+  }
+});
+
+Template.notification.onCreated(function() {
+  let notification = this.data;
+
+  if (notification.options.withSound) {
+    window.instrument.playNote(780);
+    setTimeout( function() { window.instrument.playNote(520); }, 150);
+  }
+
+  setTimeout( function() {
+    $("#notification_"+notification._id).fadeOut();
+  }, 2700);
 });
 
 window.togglePlay = (function() {
@@ -238,7 +323,6 @@ window.togglePlay = (function() {
 })();
 
 function play() {
-
   let room = Session.get('currentRoom');
 
   if (cursor >= room.board.width) {
@@ -294,3 +378,7 @@ var getCellSize = function(boardSize) {
 
   return Math.floor((boardWidth - (borderSpacing * (boardSize + 2))) / boardSize);
 }
+
+UI.registerHelper('t', function(key, options) {
+  return TAPi18n.__(key, options);
+});

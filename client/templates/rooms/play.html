@@ -7,6 +7,7 @@
         {{> waitingForPlayers}}
       {{else}}
         {{> board}}
+        {{> players}}
         {{> controls}}
       {{/if}}
     {{/if}}
@@ -25,6 +26,19 @@
   {{/if}}
 
   <p>{{_ "waiting-invite-with-url"}}</p>
+
+  <input id="shareUrl" type="url" value="{{currentUrl}}" class="btn-large btn-inline"> &nbsp;
+  <i class="fa fa-lg fa-clipboard pointer clipboard" data-clipboard-target="#shareUrl"></i>
+  <a href="https://www.facebook.com/sharer/sharer.php?u={{currentUrl}}" target="_blank">
+    <i class="fa fa-facebook-square fa-lg"></i>
+  </a>
+  <a href="https://twitter.com/home?status={{currentUrl}}" target="_blank">
+    <i class="fa fa-twitter-square fa-lg"></i>
+  </a>
+  <a href="https://plus.google.com/share?url={{currentUrl}}" target="_blank">
+    <i class="fa fa-google-plus-square fa-lg"></i>
+  </a>
+
 </template>
 
 <template name="board">
@@ -41,12 +55,15 @@
   </table>
 </template>
 
-<template name="controls">
+<template name="players">
   <div class="player-list">
     {{#each players}}
       <span class="player player_{{@index}} user_{{userId}}" data-slot={{@index}}>{{ name }}</span>
     {{/each}}
   </div>
+</template>
+
+<template name="controls">
   <div class="controls">
     <button id="play"><i class="fa fa-{{playButtonIcon}}"></i></button>
   </div>

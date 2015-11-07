@@ -149,16 +149,6 @@
     color:  rgb(250,250,250);
   }
 
-  #shareUrl {
-    width: 150px;
-  }
-
-  #options, #share {
-    margin-top:  25px;
-    text-align:  center;
-    display: none;
-  }
-
   h2 {
     margin: 0 0 5px 0;
     font-size: 1.25em;
@@ -171,32 +161,8 @@
   background-color: #F44336;
 }
 &.player_1 {
-  background-color: #2196F3;
-}
-// &.LIGHT_GREY {
-//   background-color: #607D8B;
-// }
-&.player_1 {
   background-color: #009688;
 }
-// &.YELLOW {
-//   background-color: #FFEB3B;
-// }
-// &.ORANGE {
-//   background-color: #FF5722;
-// }
-// &.INDIGO {
-//   background-color: #3F51B5;
-// }
-// &.GREEN {
-//   background-color: #1B5E20;
-// }
-// &.PINK {
-//   background-color: #E91E63;
-// }
-// &.PURPLE {
-//   background-color: #9C27B0;
-// }
 
 .hidden {
   display: none;
@@ -204,7 +170,7 @@
 
 input,
 button,
-.btn
+.btn {
   background-color black
   border 1px solid rgba(255, 255, 255, .5)
   box-sizing border-box
@@ -216,6 +182,16 @@ button,
   padding 5px 10px
   width 100%
   max-width 200px
+
+  &.btn-large {
+    max-width: 300px;
+  }
+
+  &.btn-inline {
+    display: inline;
+  }
+
+}
 
 label {
   width: 150px;
