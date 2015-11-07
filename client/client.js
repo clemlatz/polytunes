@@ -12,7 +12,8 @@ Meteor.startup( function() {
   Meteor.call('userPings');
 
   // Set language
-  TAPi18n.setLanguage(navigator.language || navigator.userLanguage);
+  const lang = navigator.language || navigator.userLanguage;
+  TAPi18n.setLanguage(lang.substring(0,2));
 
   // Notification options
   toastr.options = {
