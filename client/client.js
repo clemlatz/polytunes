@@ -68,7 +68,22 @@ Template.roomPlay.helpers({
 Template.waitingForPlayers.helpers({
   isPublic: function() {
     return this.room.isPublic;
+  },
+  'currentUrl': function() {
+    return Router.current().url;
   }
+});
+
+// Init clipboard with event delegation (only on parent)
+Template.waitingForPlayers.onRendered(function () {
+  this.clipboard = new Clipboard('.clipboard');
+  this.clipboard.on('success', (e) => {
+    toastr.success(TAPi18n.__('copied'));
+  });
+});
+
+Template.waitingForPlayers.onDestroyed(function searchResultsonDestroyed() {
+  this.clipboard.destroy();
 });
 
 Template.roomPlay.onCreated(function() {
@@ -212,7 +227,6 @@ Template.roomPlay.events({
         id: target.data('id'),
         slot: $('.user_'+Meteor.userId()).data('slot'),
       };
-      console.log(cell);
 
     if (target.hasClass('active')) {
       cell.active = false;

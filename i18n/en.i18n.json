@@ -17,6 +17,7 @@
   "waiting-in-public-room": "You're in a public room, maybe someone will eventually join in. But if not, you can always bring someone.",
   "waiting-in-private-room": "You're in a private room, nobody will join you unless you invite him.",
   "waiting-invite-with-url": "Send this page's URL to invite a friend, your neigbhour, your secret crush or your grandma — anyone can play Polytunes!",
+  "copied": "Copied!",
   "user-joined-the-room": "__user_name__ joined the room.",
   "user-left-the-room": "__user_name__ left the room."
 }

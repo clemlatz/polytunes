@@ -26,6 +26,10 @@
   {{/if}}
 
   <p>{{_ "waiting-invite-with-url"}}</p>
+
+  <input id="shareUrl" type="url" value="{{currentUrl}}" class="large">
+  <i class="fa fa-lg fa-clipboard pointer clipboard" data-clipboard-target="#shareUrl"></i>
+
 </template>
 
 <template name="board">

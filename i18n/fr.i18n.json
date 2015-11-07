@@ -17,6 +17,7 @@
   "waiting-in-public-room": "Vous êtes dans une salle publique, peut-être allez-vous être rejoint par un inconnu ? Dans le cas contraire, vous pouvez toujours inviter quelqu'un.",
   "waiting-in-private-room": "Vous êtes dans une salle privée, personne ne peut se joindre à vous sans avoir été invité.",
   "waiting-invite-with-url": "Envoyer l'URL de cette page pour inviter un ami, un voisin, votre grand-mère, tout le monde peut jouer à Polytunes !",
+  "copied": "Copié !",
   "user-joined-the-room": "__user_name__ a rejoint la salle.",
   "user-left-the-room": "__user_name__ a quitté la salle."
 }
