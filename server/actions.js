@@ -48,6 +48,7 @@ Meteor.methods({
         lastSeenAt: (new Date()).getTime(),
       }
     });
+    console.log(user.currentRoom);
     Meteor.call('userJoinsRoom', user.currentRoom);
     console.log(`User ${name} logged in.`);
 	},
@@ -56,6 +57,12 @@ Meteor.methods({
     let user = Meteor.user(),
       room = Polytunes.Rooms.findOne(roomId);
 
+    // Don't join if user is not logged
+    if (!user.profile.name) {
+      return false;
+    }
+
+    // Update user current room
     Meteor.users.update(user, { $set: { 'currentRoom': roomId } });
 
     // Remove player before inserting
@@ -82,7 +89,7 @@ Meteor.methods({
     user = user || Meteor.user();
     let room = Polytunes.Rooms.findOne(roomId);
 
-    if (!user || !room) {
+    if (!user || !room || !user.profile.name) {
       return false;
     }
 
