@@ -96,6 +96,11 @@ Template.roomWatch.onCreated(function() {
   Session.set("currentRoom", room);
 });
 
+Template.solo.onCreated(function() {
+  let room = this.data.room;
+  Session.set("currentRoom", room);
+});
+
 let boardData;
 Template.board.helpers({
   rows: function () {
@@ -123,10 +128,12 @@ Template.board.helpers({
   }
 });
 
-Template.controls.helpers({
+Template.players.helpers({
   players: function() {
     return this.room.players;
-  },
+  }
+});
+Template.controls.helpers({
   playButtonIcon: function() {
     return (Session.get('playing') === true ? 'pause' : 'play');
   }
@@ -157,7 +164,7 @@ Template.body.events({
   }
 });
 
-Template.roomPlay.events({
+Template.board.events({
 
   // Play note on mouse down if playback is off
   'mousedown td': function(event, template) {
@@ -183,6 +190,11 @@ Template.roomPlay.events({
   'mouseup': function() {
     window.instrument.stopPlayingNote();
   },
+});
+
+
+// Room in play mode
+Template.roomPlay.events({
 
   // Add note to the board when mouse button is released
   'mouseup td': function (event, template) {
@@ -205,8 +217,28 @@ Template.roomPlay.events({
         toastr.error(TAPi18n.__(error.reason));
       }
     });
-  },
-});
+  }
+})
+
+
+// Room in solo mode
+Template.solo.events({
+  // Activate cell without sending note to the server
+  'mouseup td': function(event, template) {
+    const target = $(event.target),
+      id = target.data('id'),
+      coord = id.match(/{(\d+);(\d+)}/),
+      x = coord[1],
+      y = coord[2];
+    if (target.hasClass('active')) {
+      boardData[y][x].active = false;
+      target.removeClass("active player_0");
+    } else {
+      boardData[y][x].active = true;
+      target.addClass("active player_0");
+    }
+  }
+})
 
 Template.roomWatch.events({
   'click #board': function() {
@@ -260,7 +292,6 @@ window.togglePlay = (function() {
 })();
 
 function play() {
-
   let room = Session.get('currentRoom');
 
   if (cursor >= room.board.width) {
