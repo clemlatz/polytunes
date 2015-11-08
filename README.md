@@ -33,6 +33,9 @@ Other contributors are [listed on Github](https://github.com/iwazaru/polytunes/g
 
 ## Changelog
 
+0.7.1 (2015-11-07)
+* Fixed current page url in wait room share options
+
 0.7 (2015-11-07)
 * Added a solo play mode
 * Added notifications when player joins or watch
