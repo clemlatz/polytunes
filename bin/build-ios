@@ -1,1 +1,1 @@
-meteor run ios-device --mobile-server="http://polytun.es"
+meteor build ../polytunes-ios --server="http://polytun.es"
