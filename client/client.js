@@ -69,8 +69,8 @@ Template.waitingForPlayers.helpers({
   isPublic: function() {
     return this.room.isPublic;
   },
-  'currentUrl': function() {
-    return Router.current().url;
+  currentUrl: function() {
+    return window.location.href;
   }
 });
 
