@@ -4,17 +4,16 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-base             # Packages every Meteor app needs to have
-mobile-experience       # Packages for a great mobile UX
-mongo                   # The database Meteor supports right now
+meteor-base@1.4.0             # Packages every Meteor app needs to have
+mobile-experience@1.1.0       # Packages for a great mobile UX
+mongo@1.11.0                   # The database Meteor supports right now
 blaze-html-templates    # Compile .html files into Meteor Blaze views
-session                 # Client-side reactive dictionary for your app
+session@1.2.0                 # Client-side reactive dictionary for your app
 jquery                  # Helpful client-side library
-tracker                 # Meteor's client-side reactive programming library
+tracker@1.2.0                 # Meteor's client-side reactive programming library
 
-standard-minifiers      # JS/CSS minifiers run for production mode
-es5-shim                # ECMAScript 5 compatibility for older browsers.
-ecmascript              # Enable ECMAScript2015+ syntax in app code
+es5-shim@4.8.0                # ECMAScript 5 compatibility for older browsers.
+ecmascript@0.15.1              # Enable ECMAScript2015+ syntax in app code
 
 stylus                    # Stylus support
 artwells:accounts-guest   # Automatically add visitor as anonymous guest with userId
@@ -39,4 +38,8 @@ chrismbeckett:toastr      # Notifications
 #mizzao:timesync
 #lookback:tooltips
 #u2622:persistent-session
-zenorocha:clipboard
+standard-minifier-css
+standard-minifier-js
+shell-server
+dynamic-import
+underscore
