@@ -14,7 +14,7 @@ Polytunes inspirations are Yamaha's [Tenori-on](http://usa.yamaha.com/products/m
 
 ## Live demo
 
-http://polytun.es/
+https://polytunes.meteorapp.com/
 
 ## Installation
 
