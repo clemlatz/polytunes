@@ -21,7 +21,7 @@ https://polytunes.meteorapp.com/
 1. Install [Meteor](https://www.meteor.com/) `curl https://install.meteor.com/ | sh`
 2. Clone this repo `git clone git@github.com:iwazaru/polytunes.git`
 3. Change directory `cd polytunes`
-4. Run the app `run meteor`
+4. Run the app `meteor run`
 5. Go to http://localhost:3000/
 6. Enjoy.
 
